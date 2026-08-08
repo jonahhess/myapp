@@ -17,7 +17,9 @@ apiClient.interceptors.request.use(
       if (isJwtExpired(token)) {
         setAuthToken(null);
       } else {
-        config.headers["token-auth-x"] = token;
+        config.headers = config.headers || {};
+        config.headers["x-auth-token"] = token;
+        config.headers.Authorization = `Bearer ${token}`;
       }
     }
 
@@ -30,8 +32,13 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error?.response?.status;
+    const responseData = error?.response?.data;
     const message =
-      error?.response?.data?.message || error?.message || "Request failed";
+      (typeof responseData === "string"
+        ? responseData
+        : responseData?.message) ||
+      error?.message ||
+      "Request failed";
 
     if (status === 401) {
       setAuthToken(null);
