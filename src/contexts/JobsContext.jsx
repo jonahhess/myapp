@@ -173,10 +173,15 @@ export function JobsProvider({ children }) {
   return <JobsContext.Provider value={value}>{children}</JobsContext.Provider>;
 }
 
-export function useJobs() {
+export function useJobs(options = {}) {
+  const { optional = false } = options;
   const context = useContext(JobsContext);
 
   if (!context) {
+    if (optional) {
+      return null;
+    }
+
     throw new Error("useJobs must be used within JobsProvider");
   }
 

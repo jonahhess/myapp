@@ -5,6 +5,7 @@ import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeleton from "../components/JobCardSkeleton.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import Pagination from "../components/Pagination.jsx";
+import { useJobs } from "../contexts/JobsContext.jsx";
 import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeJob } from "../utils/normalizers";
@@ -30,6 +31,8 @@ function readJobsPayload(payload) {
 
 function MyJobs() {
   const navigate = useNavigate();
+  const jobsContext = useJobs({ optional: true });
+  const reloadJobs = jobsContext?.reloadJobs;
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -112,6 +115,7 @@ function MyJobs() {
       setJobs((prevJobs) =>
         prevJobs.filter((job) => job.id !== jobPendingDelete.id),
       );
+      await reloadJobs?.({ background: true });
       setToastMessage(`Deleted \"${jobPendingDelete.title}\" successfully.`);
       setErrorMessage("");
     } catch (error) {
