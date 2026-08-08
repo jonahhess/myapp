@@ -21,7 +21,7 @@ function mapJwtToAuthUser(payload) {
   const role = isAdmin ? "admin" : isRecruiter ? "recruiter" : "registered";
 
   return {
-    id: payload.id || payload.sub || payload.userId || "",
+    id: payload.id || payload._id || payload.sub || payload.userId || "",
     isAdmin,
     isRecruiter,
     role,
@@ -68,7 +68,9 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (credentials) => {
     const data = await usersService.login(credentials);
     const token =
-      data?.token || data?.jwt || data?.accessToken || data?.data?.token;
+      typeof data === "string"
+        ? data
+        : data?.token || data?.jwt || data?.accessToken || data?.data?.token;
 
     const payload = decodeJwt(token);
     const nextUser = mapJwtToAuthUser(payload);
