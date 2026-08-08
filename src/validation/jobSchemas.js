@@ -53,8 +53,8 @@ export function createJobValidationSchema() {
       .min(0, "Maximum salary must be non-negative")
       .required("Maximum salary is required")
       .test(
-        "max-lte-min",
-        "Maximum salary must be less than or equal to minimum salary",
+        "max-gte-min",
+        "Maximum salary must be greater than or equal to minimum salary",
         function validateSalaryMax(value) {
           const { salaryMin } = this.parent;
           if (
@@ -64,7 +64,7 @@ export function createJobValidationSchema() {
             return true;
           }
 
-          return Number(value) <= Number(salaryMin);
+          return Number(value) >= Number(salaryMin);
         },
       ),
     phone: createIsraeliPhoneSchema(),
