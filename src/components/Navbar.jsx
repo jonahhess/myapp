@@ -10,6 +10,15 @@ function Navbar({
   onLogout,
 }) {
   const items = getNavigationItems(user, isAuthenticated);
+  const authItem = items.find(
+    (item) => item.key === "login" || item.key === "logout",
+  );
+  const primaryItems = items.filter((item) => item !== authItem);
+  const authClassName = authItem
+    ? authItem.key === "login"
+      ? "app-nav__link--auth-login"
+      : "app-nav__link--auth-logout"
+    : "";
 
   const actionHandlers = {
     search: onSearch,
@@ -20,30 +29,55 @@ function Navbar({
   return (
     <nav className="app-nav" aria-label="Main navigation">
       <h1 className="app-nav__brand">{title}</h1>
-      <ul className="app-nav__list">
-        {items.map((item) => (
-          <li key={item.key} className="app-nav__item">
-            {item.type === "route" ? (
+      <div className="app-nav__menu">
+        <ul className="app-nav__list">
+          {primaryItems.map((item) => (
+            <li key={item.key} className="app-nav__item">
+              {item.type === "route" ? (
+                <NavLink
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `app-nav__link${isActive ? " app-nav__link--active" : ""}`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  className="app-nav__link app-nav__button"
+                  onClick={actionHandlers[item.action]}
+                >
+                  {item.label}
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        {authItem ? (
+          <div className="app-nav__auth">
+            {authItem.type === "route" ? (
               <NavLink
-                to={item.to}
+                to={authItem.to}
                 className={({ isActive }) =>
-                  `app-nav__link${isActive ? " app-nav__link--active" : ""}`
+                  `app-nav__link app-nav__link--auth ${authClassName}${isActive ? " app-nav__link--active" : ""}`
                 }
               >
-                {item.label}
+                {authItem.label}
               </NavLink>
             ) : (
               <button
                 type="button"
-                className="app-nav__link app-nav__button"
-                onClick={actionHandlers[item.action]}
+                className={`app-nav__link app-nav__button app-nav__link--auth ${authClassName}`}
+                onClick={actionHandlers[authItem.action]}
               >
-                {item.label}
+                {authItem.label}
               </button>
             )}
-          </li>
-        ))}
-      </ul>
+          </div>
+        ) : null}
+      </div>
     </nav>
   );
 }

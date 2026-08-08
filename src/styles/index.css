@@ -159,6 +159,13 @@ code {
   line-height: 1.1;
 }
 
+.app-nav__menu {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .app-nav__list {
   list-style: none;
   display: flex;
@@ -170,6 +177,11 @@ code {
 
 .app-nav__item {
   margin: 0;
+}
+
+.app-nav__auth {
+  display: flex;
+  align-items: center;
 }
 
 .app-nav__link {
@@ -199,10 +211,56 @@ code {
   color: var(--text-h);
 }
 
+.app-nav__link--auth-logout {
+  background: #dc2626;
+  border-color: #b91c1c;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.app-nav__link--auth-logout:hover {
+  background: #b91c1c;
+  border-color: #991b1b;
+  color: #ffffff;
+}
+
+.app-nav__link--auth-logout.app-nav__link--active {
+  background: #991b1b;
+  border-color: #7f1d1d;
+  color: #ffffff;
+}
+
+.app-nav__link--auth-login {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.app-nav__link--auth-login:hover {
+  background: #1d4ed8;
+  border-color: #1e40af;
+  color: #ffffff;
+}
+
+.app-nav__link--auth-login.app-nav__link--active {
+  background: #1e40af;
+  border-color: #1e3a8a;
+  color: #ffffff;
+}
+
 .app-nav__button {
   font: inherit;
   background: transparent;
   cursor: pointer;
+}
+
+.app-nav__button.app-nav__link--auth-logout {
+  background: #dc2626;
+}
+
+.app-nav__button.app-nav__link--auth-login {
+  background: #2563eb;
 }
 
 .app-nav__link:focus-visible,
@@ -281,6 +339,18 @@ code {
   .app-nav__list {
     flex-wrap: wrap;
     justify-content: flex-start;
+  }
+
+  .app-nav__menu {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .app-nav__auth {
+    margin-left: auto;
   }
 
   .app-footer {
