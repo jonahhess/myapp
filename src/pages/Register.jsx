@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
 import usersService from "../services/usersService";
+import { createRegisterValidationSchema } from "../validation/schemas";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeRegisterPayload } from "../utils/requestNormalization";
-
-function extractDigits(value = "") {
-  return String(value).replace(/\D/g, "");
-}
 
 function Register() {
   const navigate = useNavigate();
@@ -34,79 +30,7 @@ function Register() {
       isRecruiter: false,
     },
     validateOnMount: true,
-    validationSchema: yup.object({
-      firstName: yup
-        .string()
-        .trim()
-        .min(2, "First name must be at least 2 characters")
-        .max(256, "First name must be at most 256 characters")
-        .required("First name is required"),
-      middleName: yup.string().trim().max(256, "Middle name is too long"),
-      lastName: yup
-        .string()
-        .trim()
-        .min(2, "Last name must be at least 2 characters")
-        .max(256, "Last name must be at most 256 characters")
-        .required("Last name is required"),
-      phone: yup
-        .string()
-        .required("Phone number is required")
-        .test(
-          "israeli-phone",
-          "Phone must be Israeli format with 9-11 digits",
-          (value) => {
-            const digits = extractDigits(value);
-            if (digits.length < 9 || digits.length > 11) {
-              return false;
-            }
-
-            return digits.startsWith("0") || digits.startsWith("972");
-          },
-        ),
-      email: yup
-        .string()
-        .email("Enter a valid email")
-        .required("Email is required"),
-      password: yup
-        .string()
-        .required("Password is required")
-        .max(8, "Password can be at most 8 characters")
-        .matches(/[A-Z]/, "Password must include at least one uppercase letter")
-        .matches(/[a-z]/, "Password must include at least one lowercase letter")
-        .matches(/[-*&^%$#@!]/, "Password must include one special character")
-        .test(
-          "max-4-digits",
-          "Password can include at most 4 digits",
-          (value) => extractDigits(value).length <= 4,
-        ),
-      imageUrl: yup.string().trim().url("Image URL must be valid").nullable(),
-      imageAlt: yup
-        .string()
-        .trim()
-        .when("imageUrl", {
-          is: (imageUrl) => Boolean(String(imageUrl || "").trim()),
-          then: (schema) =>
-            schema.required("Image alt text is required when URL is provided"),
-          otherwise: (schema) => schema,
-        }),
-      country: yup.string().trim().required("Country is required"),
-      city: yup.string().trim().required("City is required"),
-      street: yup.string().trim().required("Street is required"),
-      houseNumber: yup
-        .string()
-        .required("House number is required")
-        .matches(/^\d$/, "House number must be a single digit"),
-      district: yup.string().trim(),
-      postalCode: yup
-        .string()
-        .trim()
-        .test(
-          "postal-code-number",
-          "Postal code must contain numbers only",
-          (value) => !value || /^\d+$/.test(value),
-        ),
-      isRecruiter: yup.boolean().required(),
-    }),
+    validationSchema: createRegisterValidationSchema(),
     onSubmit: async (values, helpers) => {
       setSubmitError("");
       setSubmitSuccess("");
