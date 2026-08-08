@@ -9,8 +9,7 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
 import { useSearchUi } from "../contexts/SearchContext.jsx";
 import useDebounce from "../hooks/useDebounce";
-import jobsService from "../services/jobsService";
-import { getUserFriendlyErrorMessage } from "../utils/errors";
+import useSavedJobsActions from "../hooks/useSavedJobsActions";
 
 const LazyJobCard = lazy(() => import("../components/JobCard.jsx"));
 const JOBS_PER_PAGE = 6;
@@ -23,11 +22,19 @@ function JobsSearch() {
     jobs,
     isLoadingJobs: isLoading,
     jobsErrorMessage: errorMessage,
+    reloadJobs,
   } = useJobs();
   const [currentPage, setCurrentPage] = useState(1);
-  const [saveOverrides, setSaveOverrides] = useState({});
-  const [saveError, setSaveError] = useState("");
-  const [pendingSaveIds, setPendingSaveIds] = useState({});
+  const currentUserId = user?.id || user?._id || "";
+  const { saveError, isSavePending, isSavedByCurrentUser, handleToggleSave } =
+    useSavedJobsActions({
+      currentUserId,
+      isAuthenticated,
+      onRequireAuth: () =>
+        navigate("/login", { state: { from: { pathname: "/jobs" } } }),
+      onToggleSuccess: () => reloadJobs({ background: true }),
+      failureMessage: "Failed to update saved status.",
+    });
   const debouncedFilters = useDebounce(filters, 300);
 
   useEffect(() => {
@@ -95,58 +102,6 @@ function JobsSearch() {
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
   const pageJobs = filteredJobs.slice(pageStart, pageStart + JOBS_PER_PAGE);
-
-  const isSavedByCurrentUser = (job) => {
-    if (!isAuthenticated || !user?.id || !job) {
-      return false;
-    }
-
-    const overrideValue = saveOverrides[job.id];
-    if (typeof overrideValue === "boolean") {
-      return overrideValue;
-    }
-
-    return (job.savedBy || []).some(
-      (savedUserId) => String(savedUserId) === String(user.id),
-    );
-  };
-
-  const handleToggleSave = async (job) => {
-    if (!isAuthenticated) {
-      navigate("/login", { state: { from: { pathname: "/jobs" } } });
-      return;
-    }
-
-    if (pendingSaveIds[job.id]) {
-      return;
-    }
-
-    setSaveError("");
-    const previousState = isSavedByCurrentUser(job);
-    setSaveOverrides((prev) => ({ ...prev, [job.id]: !previousState }));
-    setPendingSaveIds((prev) => ({ ...prev, [job.id]: true }));
-
-    try {
-      const payload = await jobsService.toggleSaveJob(job.id);
-      const updatedSavedBy =
-        payload?.savedBy ||
-        payload?.job?.savedBy ||
-        payload?.data?.job?.savedBy;
-      if (Array.isArray(updatedSavedBy) && user?.id) {
-        const nextState = updatedSavedBy.some(
-          (savedUserId) => String(savedUserId) === String(user.id),
-        );
-        setSaveOverrides((prev) => ({ ...prev, [job.id]: nextState }));
-      }
-    } catch (error) {
-      setSaveOverrides((prev) => ({ ...prev, [job.id]: previousState }));
-      setSaveError(
-        getUserFriendlyErrorMessage(error, "Failed to update saved status."),
-      );
-    } finally {
-      setPendingSaveIds((prev) => ({ ...prev, [job.id]: false }));
-    }
-  };
 
   return (
     <main className="jobs-search-page">
@@ -310,7 +265,7 @@ function JobsSearch() {
                 job={job}
                 isSaved={isSavedByCurrentUser(job)}
                 onToggleSave={handleToggleSave}
-                isSavePending={Boolean(pendingSaveIds[job.id])}
+                isSavePending={isSavePending(job)}
               />
             ))}
           </Suspense>
