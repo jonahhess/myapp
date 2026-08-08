@@ -29,13 +29,34 @@ export function normalizeJob(job = {}) {
     currency: job.currency || "USD",
     description: job.description || "",
     category: job.category || "",
-    jobType: job.jobType || job.job_type || "",
-    experienceLevel: job.experienceLevel || job.experience_level || "",
+    jobType:
+      job.jobType ||
+      job.job_type ||
+      job.employmentType ||
+      job.employment_type ||
+      job.type ||
+      "",
+    experienceLevel:
+      job.experienceLevel ||
+      job.experience_level ||
+      job.experience ||
+      job.level ||
+      job.seniority ||
+      "",
     applyLink: job.applyLink || job.apply_link || "",
+    phone:
+      job.phone ||
+      job.phoneNumber ||
+      job.phone_number ||
+      job.contactPhone ||
+      job.contact_phone ||
+      job.contact?.phone ||
+      "",
     imageUrl: job.image?.url || job.imageUrl || job.image_url || "",
     imageAlt: job.image?.alt || job.imageAlt || job.image_alt || "",
     jobNumber: job.jobNumber || job.job_number || "",
-    contactEmail: job.email || "",
+    email: job.email || job.contactEmail || "",
+    contactEmail: job.email || job.contactEmail || "",
     savedBy: Array.isArray(job.savedBy) ? job.savedBy : [],
     recruiterId: job.recruiterId || job.recruiter_id || "",
     createdAt: job.createdAt || job.created_at || null,
