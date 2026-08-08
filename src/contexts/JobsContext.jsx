@@ -164,7 +164,8 @@ export function JobsProvider({ children }) {
       jobs,
       isLoadingJobs,
       jobsErrorMessage,
-      reloadJobs: () => loadJobs({ force: true }),
+      reloadJobs: ({ background = false } = {}) =>
+        loadJobs({ force: true, background }),
     }),
     [jobs, isLoadingJobs, jobsErrorMessage, loadJobs],
   );
