@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import * as yup from "yup";
+import { createLoginValidationSchema } from "../validation/schemas";
 
 function Login({
   onSubmit,
@@ -17,10 +17,7 @@ function Login({
       password: "",
     },
     validateOnMount: true,
-    validationSchema: yup.object({
-      email: yup.string().email("Invalid email").required("Email is required"),
-      password: yup.string().required("Password is required"),
-    }),
+    validationSchema: createLoginValidationSchema(),
     onSubmit: async (values, helpers) => {
       if (!onSubmit) {
         return;

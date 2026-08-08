@@ -1,137 +1,12 @@
 import { useFormik } from "formik";
-import * as yup from "yup";
-
-const EMPLOYMENT_TYPES = [
-  "Full-Time",
-  "Part-Time",
-  "Freelance",
-  "Temporary",
-  "Internship",
-];
-
-const EXPERIENCE_LEVELS = [
-  "Entry Level",
-  "Junior",
-  "Mid-Level",
-  "Senior",
-  "Team Lead",
-  "Management",
-];
+import {
+  createJobValidationSchema,
+  EMPLOYMENT_TYPES,
+  EXPERIENCE_LEVELS,
+} from "../validation/schemas";
 
 function extractDigits(value = "") {
   return String(value).replace(/\D/g, "");
-}
-
-function createValidationSchema() {
-  return yup.object({
-    title: yup
-      .string()
-      .trim()
-      .min(2, "Job title must be at least 2 characters")
-      .max(256, "Job title must be at most 256 characters")
-      .required("Job title is required"),
-    company: yup
-      .string()
-      .trim()
-      .min(2, "Company name must be at least 2 characters")
-      .max(256, "Company name must be at most 256 characters")
-      .required("Company name is required"),
-    description: yup
-      .string()
-      .trim()
-      .min(2, "Description must be at least 2 characters")
-      .max(1024, "Description must be at most 1024 characters")
-      .required("Description is required"),
-    category: yup
-      .string()
-      .trim()
-      .max(2, "Category can be at most 2 characters")
-      .required("Category is required"),
-    location: yup
-      .string()
-      .trim()
-      .max(2, "Location can be at most 2 characters")
-      .required("Location is required"),
-    jobType: yup
-      .string()
-      .oneOf(EMPLOYMENT_TYPES, "Select a valid employment type")
-      .required("Employment type is required"),
-    experienceLevel: yup
-      .string()
-      .oneOf(EXPERIENCE_LEVELS, "Select a valid experience level")
-      .required("Experience level is required"),
-    salaryMin: yup
-      .number()
-      .typeError("Minimum salary must be a number")
-      .min(0, "Minimum salary must be non-negative")
-      .required("Minimum salary is required"),
-    salaryMax: yup
-      .number()
-      .typeError("Maximum salary must be a number")
-      .min(0, "Maximum salary must be non-negative")
-      .required("Maximum salary is required")
-      .test(
-        "max-lte-min",
-        "Maximum salary must be less than or equal to minimum salary",
-        function validateSalaryMax(value) {
-          const { salaryMin } = this.parent;
-          if (
-            !Number.isFinite(Number(value)) ||
-            !Number.isFinite(Number(salaryMin))
-          ) {
-            return true;
-          }
-
-          return Number(value) <= Number(salaryMin);
-        },
-      ),
-    phone: yup
-      .string()
-      .required("Phone number is required")
-      .test(
-        "israeli-phone",
-        "Phone must be Israeli format with 9-11 digits",
-        (value) => {
-          const digits = extractDigits(value);
-          if (digits.length < 9 || digits.length > 11) {
-            return false;
-          }
-
-          return digits.startsWith("0") || digits.startsWith("972");
-        },
-      ),
-    email: yup
-      .string()
-      .email("Enter a valid email")
-      .required("Email is required"),
-    applyLink: yup
-      .string()
-      .trim()
-      .test(
-        "optional-url",
-        "Application link must be a valid URL",
-        (value) => !value || yup.string().url().isValidSync(value),
-      ),
-    imageUrl: yup
-      .string()
-      .trim()
-      .test(
-        "optional-image-url",
-        "Image URL must be valid",
-        (value) => !value || yup.string().url().isValidSync(value),
-      ),
-    imageAlt: yup
-      .string()
-      .trim()
-      .when("imageUrl", {
-        is: (imageUrl) => Boolean(String(imageUrl || "").trim()),
-        then: (schema) =>
-          schema.required(
-            "Image alt text is required when image URL is provided",
-          ),
-        otherwise: (schema) => schema,
-      }),
-  });
 }
 
 function toFormValues(initialValues = {}) {
@@ -195,7 +70,7 @@ function JobForm({
     initialValues: toFormValues(initialValues),
     enableReinitialize,
     validateOnMount: true,
-    validationSchema: createValidationSchema(),
+    validationSchema: createJobValidationSchema(),
     onSubmit: async (values, helpers) => {
       try {
         await onSubmit?.(toApiPayload(values), helpers);
