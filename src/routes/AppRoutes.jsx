@@ -51,7 +51,7 @@ function AppShell() {
               />
             }
           >
-            <Route path="/jobs-my" element={<MyJobs />} />
+            <Route path="/my-jobs" element={<MyJobs />} />
             <Route path="/create/jobs" element={<CreateJob />} />
           </Route>
 

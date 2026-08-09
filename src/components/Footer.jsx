@@ -27,7 +27,7 @@ function Footer({
 
   const recruiterLinks = isRecruiter
     ? [
-        { to: "/jobs-my", label: "My Jobs" },
+        { to: "/my-jobs", label: "My Jobs" },
         { to: "/create/jobs", label: "Create Job" },
       ]
     : [];

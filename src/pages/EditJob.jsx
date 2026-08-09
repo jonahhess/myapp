@@ -80,7 +80,7 @@ function EditJob() {
       if (user?.isAdmin) {
         navigate(`/jobs/${id}`, { replace: true });
       } else {
-        navigate("/jobs-my", { replace: true });
+        navigate("/my-jobs", { replace: true });
       }
     } catch (error) {
       setSubmitError(

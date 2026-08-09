@@ -16,7 +16,7 @@ const NAV_ITEMS = {
     type: "route",
     to: "/jobs-saved",
   },
-  myJobs: { key: "myJobs", label: "My Jobs", type: "route", to: "/jobs-my" },
+  myJobs: { key: "myJobs", label: "My Jobs", type: "route", to: "/my-jobs" },
   createJob: {
     key: "createJob",
     label: "Create Job",
