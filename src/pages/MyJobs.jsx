@@ -47,15 +47,6 @@ function MyJobs() {
         </button>
       </header>
 
-      {isLoading ? (
-        <>
-          <LoadingSpinner label="Loading your jobs..." />
-          <JobCardSkeleton />
-          <JobCardSkeleton />
-          <JobCardSkeleton />
-        </>
-      ) : null}
-
       {toastMessage ? <p className="form-success">{toastMessage}</p> : null}
 
       <MyJobsListSection
