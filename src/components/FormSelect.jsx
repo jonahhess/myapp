@@ -1,41 +1,42 @@
-function hasFormikFieldError(formik, name) {
-  return Boolean(
-    (formik?.touched?.[name] || formik?.submitCount > 0) &&
-    formik?.errors?.[name],
-  );
-}
-
-function FormInput({
+function FormSelect({
   formik,
   name,
   label,
+  options = [],
+  placeholder = "Select",
   id,
   prefix = "",
-  type = "text",
-  inputProps,
   wrapperClassName = "",
   errorClassName = "form-error",
   invalidClassName = "form-input--invalid",
 }) {
   const resolvedId = id || `${prefix ? `${prefix}-` : ""}${name}`;
   const errorId = `${prefix ? `${prefix}-` : ""}${name}-error`;
-  const showError = hasFormikFieldError(formik, name);
+  const showError = Boolean(
+    (formik?.touched?.[name] || formik?.submitCount > 0) &&
+    formik?.errors?.[name],
+  );
 
   return (
     <label htmlFor={resolvedId} className={wrapperClassName || undefined}>
       {label}
-      <input
-        {...inputProps}
+      <select
         id={resolvedId}
         name={name}
-        type={type}
         className={showError ? invalidClassName : ""}
         aria-invalid={showError}
         aria-describedby={showError ? errorId : undefined}
+        value={formik.values?.[name] ?? ""}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        value={formik.values?.[name] ?? ""}
-      />
+      >
+        <option value="">{placeholder}</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       {showError ? (
         <span id={errorId} className={errorClassName} role="alert">
           {formik.errors[name]}
@@ -45,4 +46,4 @@ function FormInput({
   );
 }
 
-export default FormInput;
+export default FormSelect;
