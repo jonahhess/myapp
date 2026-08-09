@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFormik } from "formik";
 import FormInput from "./FormInput.jsx";
 import FormSelect from "./FormSelect.jsx";
@@ -18,6 +19,7 @@ function JobForm({
   isSubmitting = false,
   submitError = "",
   enableReinitialize = false,
+  onValuesChange,
 }) {
   const formik = useFormik({
     initialValues: toJobFormValues(initialValues),
@@ -37,6 +39,15 @@ function JobForm({
     (formik.touched.description || formik.submitCount > 0) &&
     formik.errors.description,
   );
+  const shouldDisableSubmit =
+    formik.isSubmitting ||
+    isSubmitting ||
+    (enableReinitialize && !formik.dirty) ||
+    (formik.submitCount > 0 && !formik.isValid);
+
+  useEffect(() => {
+    onValuesChange?.(formik.values);
+  }, [formik.values, onValuesChange]);
 
   return (
     <form className="job-form" onSubmit={formik.handleSubmit} noValidate>
@@ -142,11 +153,7 @@ function JobForm({
       <button
         className="job-form__submit"
         type="submit"
-        disabled={
-          formik.isSubmitting ||
-          isSubmitting ||
-          (enableReinitialize && !formik.dirty)
-        }
+        disabled={shouldDisableSubmit}
         aria-busy={formik.isSubmitting || isSubmitting}
       >
         {formik.isSubmitting || isSubmitting ? submittingLabel : submitLabel}
