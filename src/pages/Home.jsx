@@ -1,7 +1,7 @@
 import { Suspense, lazy, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "../components/EmptyState.jsx";
-import JobCardSkeleton from "../components/JobCardSkeleton.jsx";
+import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import Pagination from "../components/Pagination.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
@@ -66,9 +66,7 @@ function Home() {
         {isLoading ? (
           <>
             <LoadingSpinner label="Loading jobs..." />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
+            <JobCardSkeletonStack />
           </>
         ) : null}
 
@@ -90,9 +88,7 @@ function Home() {
           <Suspense
             fallback={
               <>
-                <JobCardSkeleton />
-                <JobCardSkeleton />
-                <JobCardSkeleton />
+                <JobCardSkeletonStack />
               </>
             }
           >

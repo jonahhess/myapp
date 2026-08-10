@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import EmptyState from "../EmptyState.jsx";
-import JobCardSkeleton from "../JobCardSkeleton.jsx";
+import JobCardSkeletonStack from "../JobCardSkeletonStack.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import Pagination from "../Pagination.jsx";
 import { JOBS_PER_PAGE } from "../../pages/myJobs/myJobsUtils";
@@ -26,9 +26,7 @@ function MyJobsListSection({
       {isLoading ? (
         <>
           <LoadingSpinner label="Loading your jobs..." />
-          <JobCardSkeleton />
-          <JobCardSkeleton />
-          <JobCardSkeleton />
+          <JobCardSkeletonStack />
         </>
       ) : null}
 
@@ -52,9 +50,7 @@ function MyJobsListSection({
         <Suspense
           fallback={
             <>
-              <JobCardSkeleton />
-              <JobCardSkeleton />
-              <JobCardSkeleton />
+              <JobCardSkeletonStack />
             </>
           }
         >

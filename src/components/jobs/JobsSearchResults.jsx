@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import EmptyState from "../EmptyState.jsx";
-import JobCardSkeleton from "../JobCardSkeleton.jsx";
+import JobCardSkeletonStack from "../JobCardSkeletonStack.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 
 const LazyJobCard = lazy(() => import("../JobCard.jsx"));
@@ -28,9 +28,7 @@ function JobsSearchResults({
       {isLoading ? (
         <>
           <LoadingSpinner label="Loading jobs..." />
-          <JobCardSkeleton />
-          <JobCardSkeleton />
-          <JobCardSkeleton />
+          <JobCardSkeletonStack />
         </>
       ) : null}
 
@@ -52,9 +50,7 @@ function JobsSearchResults({
         <Suspense
           fallback={
             <>
-              <JobCardSkeleton />
-              <JobCardSkeleton />
-              <JobCardSkeleton />
+              <JobCardSkeletonStack />
             </>
           }
         >
