@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useMemo,
-  useState,
-  use,
-} from "react";
+import { createContext, useCallback, useMemo, useState, use } from "react";
 
 const SearchContext = createContext(null);
 
