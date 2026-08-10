@@ -55,6 +55,10 @@ const NUMBER_FILTER_FIELDS = [
 ];
 
 function JobsSearchFilters({ filters, updateFilter, resetFilters }) {
+  const hasActiveFilters = Object.values(filters || {}).some(
+    (value) => String(value ?? "").trim() !== "",
+  );
+
   return (
     <section className="jobs-search-filters" aria-label="Job filters">
       <div className="jobs-search-grid">
@@ -86,7 +90,11 @@ function JobsSearchFilters({ filters, updateFilter, resetFilters }) {
       </div>
 
       <div className="jobs-search-actions">
-        <button type="button" onClick={resetFilters}>
+        <button
+          type="button"
+          onClick={resetFilters}
+          disabled={!hasActiveFilters}
+        >
           Clear filters
         </button>
       </div>
