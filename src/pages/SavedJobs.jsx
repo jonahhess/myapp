@@ -34,8 +34,9 @@ function SavedJobs() {
     () => jobs.filter((job) => isSavedByCurrentUser(job)),
     [jobs, isSavedByCurrentUser],
   );
+  const savedJobsCount = savedJobs.length;
 
-  const totalPages = Math.max(1, Math.ceil(savedJobs.length / JOBS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(savedJobsCount / JOBS_PER_PAGE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
   const pageJobs = savedJobs.slice(pageStart, pageStart + JOBS_PER_PAGE);
@@ -67,7 +68,7 @@ function SavedJobs() {
         </section>
       )}
 
-      {!isLoading && !errorMessage && savedJobs.length === 0 && (
+      {!isLoading && !errorMessage && savedJobsCount === 0 && (
         <EmptyState
           title="No saved jobs yet"
           description="Save jobs from Home or Search and they will appear here."
@@ -96,7 +97,7 @@ function SavedJobs() {
         </Suspense>
       )}
 
-      {!isLoading && !errorMessage && savedJobs.length > JOBS_PER_PAGE && (
+      {!isLoading && !errorMessage && savedJobsCount > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
