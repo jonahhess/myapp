@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import useAsyncListResource from "../../hooks/useAsyncListResource";
 import usePagedCollection from "../../hooks/usePagedCollection";
 import usersService from "../../services/usersService";
 import { getUserFriendlyErrorMessage } from "../../utils/errors";
@@ -9,47 +10,29 @@ import {
 } from "./adminUsersUtils";
 
 export default function useAdminUsers() {
-  const [users, setUsers] = useState([]);
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
   const [isDeletingUser, setIsDeletingUser] = useState(false);
   const [pendingDeleteUser, setPendingDeleteUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  useEffect(() => {
-    let isMounted = true;
+  const mapUserItems = useCallback(
+    (payload) => readUsersPayload(payload).map(normalizeUserRow),
+    [],
+  );
 
-    async function loadUsers() {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      try {
-        const payload = await usersService.getUsers();
-        const nextUsers = readUsersPayload(payload).map(normalizeUserRow);
-        if (isMounted) {
-          setUsers(nextUsers);
-        }
-      } catch (error) {
-        if (isMounted) {
-          setErrorMessage(
-            getUserFriendlyErrorMessage(error, "Failed to load users."),
-          );
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadUsers();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const {
+    items: users,
+    setItems: setUsers,
+    isLoading,
+    errorMessage,
+    setErrorMessage,
+  } = useAsyncListResource({
+    fetcher: usersService.getUsers,
+    mapItems: mapUserItems,
+    errorMessage: "Failed to load users.",
+    clearItemsOnError: false,
+  });
 
   const filteredUsers = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();

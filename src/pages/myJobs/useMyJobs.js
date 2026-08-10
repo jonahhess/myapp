@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useJobs } from "../../contexts/JobsContext.jsx";
+import useAsyncListResource from "../../hooks/useAsyncListResource";
 import usePagedCollection from "../../hooks/usePagedCollection";
 import jobsService from "../../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../../utils/errors";
@@ -9,47 +10,28 @@ import { JOBS_PER_PAGE, readJobsPayload } from "./myJobsUtils";
 export default function useMyJobs() {
   const jobsContext = useJobs({ optional: true });
   const reloadJobs = jobsContext?.reloadJobs;
-  const [jobs, setJobs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [jobPendingDelete, setJobPendingDelete] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
   const [isDeletingJob, setIsDeletingJob] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
+  const mapJobItems = useCallback(
+    (payload) => readJobsPayload(payload).map(normalizeJob),
+    [],
+  );
 
-    async function loadMyJobs() {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      try {
-        const payload = await jobsService.getMyJobs();
-        const nextJobs = readJobsPayload(payload).map(normalizeJob);
-        if (isMounted) {
-          setJobs(nextJobs);
-        }
-      } catch (error) {
-        if (isMounted) {
-          setJobs([]);
-          setErrorMessage(
-            getUserFriendlyErrorMessage(error, "Failed to load your jobs."),
-          );
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadMyJobs();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const {
+    items: jobs,
+    setItems: setJobs,
+    isLoading,
+    errorMessage,
+    setErrorMessage,
+  } = useAsyncListResource({
+    fetcher: jobsService.getMyJobs,
+    mapItems: mapJobItems,
+    errorMessage: "Failed to load your jobs.",
+    clearItemsOnError: true,
+  });
 
   const {
     totalCount: totalJobsCount,
