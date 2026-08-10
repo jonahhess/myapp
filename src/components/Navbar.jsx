@@ -16,8 +16,8 @@ function Navbar({
   const primaryItems = items.filter((item) => item !== authItem);
   const authClassName = authItem
     ? authItem.key === "login"
-      ? "app-nav__link--auth-login"
-      : "app-nav__link--auth-logout"
+      ? "login"
+      : "logout"
     : "";
 
   const actionHandlers = {
@@ -28,16 +28,16 @@ function Navbar({
 
   return (
     <nav className="app-nav" aria-label="Main navigation">
-      <h1 className="app-nav__brand">{title}</h1>
-      <div className="app-nav__menu">
-        <ul className="app-nav__list">
+      <h1 className="brand">{title}</h1>
+      <div className="menu">
+        <ul className="links">
           {primaryItems.map((item) => (
-            <li key={item.key} className="app-nav__item">
+            <li key={item.key}>
               {item.type === "route" ? (
                 <NavLink
                   to={item.to}
                   className={({ isActive }) =>
-                    `app-nav__link${isActive ? " app-nav__link--active" : ""}`
+                    `link${isActive ? " active" : ""}`
                   }
                 >
                   {item.label}
@@ -45,7 +45,7 @@ function Navbar({
               ) : (
                 <button
                   type="button"
-                  className="app-nav__link app-nav__button"
+                  className="link button"
                   onClick={actionHandlers[item.action]}
                 >
                   {item.label}
@@ -56,12 +56,12 @@ function Navbar({
         </ul>
 
         {authItem ? (
-          <div className="app-nav__auth">
+          <div className="auth">
             {authItem.type === "route" ? (
               <NavLink
                 to={authItem.to}
                 className={({ isActive }) =>
-                  `app-nav__link app-nav__link--auth ${authClassName}${isActive ? " app-nav__link--active" : ""}`
+                  `link auth ${authClassName}${isActive ? " active" : ""}`
                 }
               >
                 {authItem.label}
@@ -69,7 +69,7 @@ function Navbar({
             ) : (
               <button
                 type="button"
-                className={`app-nav__link app-nav__button app-nav__link--auth ${authClassName}`}
+                className={`link button auth ${authClassName}`}
                 onClick={actionHandlers[authItem.action]}
               >
                 {authItem.label}

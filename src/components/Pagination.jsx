@@ -55,22 +55,18 @@ function Pagination({ currentPage = 1, totalPages = 1, onPageChange }) {
   return (
     <nav className="pagination" aria-label="Pagination">
       <button
-        className="pagination__button"
+        className="button"
         onClick={handlePrevious}
         disabled={currentPage === 1}
       >
         Previous
       </button>
 
-      <ol className="pagination__pages" aria-label="Page numbers">
+      <ol className="pages" aria-label="Page numbers">
         {pages.map((item) => {
           if (typeof item !== "number") {
             return (
-              <li
-                key={item}
-                className="pagination__ellipsis"
-                aria-hidden="true"
-              >
+              <li key={item} className="ellipsis" aria-hidden="true">
                 ...
               </li>
             );
@@ -80,9 +76,7 @@ function Pagination({ currentPage = 1, totalPages = 1, onPageChange }) {
           return (
             <li key={item}>
               <button
-                className={`pagination__button pagination__button--page${
-                  isActive ? " pagination__button--active" : ""
-                }`}
+                className={`button page${isActive ? " active" : ""}`}
                 onClick={() => goToPage(item)}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -93,12 +87,12 @@ function Pagination({ currentPage = 1, totalPages = 1, onPageChange }) {
         })}
       </ol>
 
-      <span className="pagination__status" aria-live="polite">
+      <span className="status" aria-live="polite">
         Page {currentPage} of {totalPages}
       </span>
 
       <button
-        className="pagination__button"
+        className="button"
         onClick={handleNext}
         disabled={currentPage === totalPages}
       >

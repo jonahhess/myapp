@@ -47,10 +47,10 @@ function JobCard({
 
   return (
     <article className="job-card">
-      <div className="job-card__header">
-        <div className="job-card__logo-wrap" aria-hidden="true">
+      <div className="header">
+        <div className="logo-wrap" aria-hidden="true">
           <img
-            className="job-card__logo"
+            className="logo"
             src={companyLogo}
             alt={job.imageAlt || `${job.company || "Company"} logo`}
             data-had-original-source={hasOriginalImageSource}
@@ -73,25 +73,23 @@ function JobCard({
           />
         </div>
 
-        <div className="job-card__summary">
-          <h3 className="job-card__title">{job.title}</h3>
-          <p className="job-card__company">{job.company}</p>
-          <p className="job-card__location">{job.location}</p>
-          {!!detailsMeta ? (
-            <p className="job-card__meta">{detailsMeta}</p>
-          ) : null}
+        <div className="summary">
+          <h3 className="title">{job.title}</h3>
+          <p className="company">{job.company}</p>
+          <p className="location">{job.location}</p>
+          {!!detailsMeta ? <p className="meta">{detailsMeta}</p> : null}
         </div>
       </div>
 
-      {!!salaryText ? <p className="job-card__salary">{salaryText}</p> : null}
+      {!!salaryText ? <p className="salary">{salaryText}</p> : null}
 
       {!!publicationDate ? (
-        <p className="job-card__date">Published: {publicationDate}</p>
+        <p className="date">Published: {publicationDate}</p>
       ) : null}
 
       <button
         type="button"
-        className="job-card__save"
+        className="save"
         aria-label={resolvedSavedState ? "Unsave job" : "Save job"}
         disabled={isSavePending}
         aria-busy={isSavePending}
@@ -101,11 +99,11 @@ function JobCard({
       </button>
 
       {!!job.description ? (
-        <p className="job-card__description">{job.description}</p>
+        <p className="description">{job.description}</p>
       ) : null}
 
       {!!job.applyLink ? (
-        <p className="job-card__apply">
+        <p className="apply">
           <a href={job.applyLink} target="_blank" rel="noreferrer">
             Apply now
           </a>
@@ -113,7 +111,7 @@ function JobCard({
       ) : null}
 
       {(canEdit || canDelete) && (
-        <div className="job-card__actions">
+        <div className="actions">
           {canEdit ? (
             <button type="button" onClick={() => onEdit?.(job)}>
               Edit

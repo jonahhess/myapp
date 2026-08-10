@@ -50,7 +50,7 @@ export const COMPENSATION_FIELDS = [
     id: "job-apply-link",
     name: "applyLink",
     label: "Application link (optional)",
-    wrapperClassName: "job-form__full-width",
+    wrapperClassName: "full",
   },
 ];
 

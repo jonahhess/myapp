@@ -51,9 +51,9 @@ function JobForm({
 
   return (
     <form className="job-form" onSubmit={formik.handleSubmit} noValidate>
-      <fieldset className="job-form__group">
+      <fieldset className="group">
         <legend>Role Details</legend>
-        <div className="job-form__grid">
+        <div className="grid">
           {ROLE_TEXT_FIELDS.map((field) => (
             <FormInput
               key={field.name}
@@ -78,7 +78,7 @@ function JobForm({
           ))}
         </div>
 
-        <label htmlFor="job-description" className="job-form__full-width">
+        <label htmlFor="job-description" className="full">
           Job description
           <textarea
             id="job-description"
@@ -105,9 +105,9 @@ function JobForm({
         </label>
       </fieldset>
 
-      <fieldset className="job-form__group">
+      <fieldset className="group">
         <legend>Compensation and Contact</legend>
-        <div className="job-form__grid">
+        <div className="grid">
           {COMPENSATION_FIELDS.map((field) => (
             <FormInput
               key={field.name}
@@ -124,13 +124,13 @@ function JobForm({
         </div>
       </fieldset>
 
-      <fieldset className="job-form__group">
+      <fieldset className="group">
         <legend>Image</legend>
-        <p className="job-form__hint">
+        <p className="hint">
           Image object is always sent. URL and alt text are optional unless URL
           is provided.
         </p>
-        <div className="job-form__grid">
+        <div className="grid">
           {IMAGE_FIELDS.map((field) => (
             <FormInput
               key={field.name}
@@ -151,7 +151,7 @@ function JobForm({
       ) : null}
 
       <button
-        className="job-form__submit"
+        className="submit"
         type="submit"
         disabled={shouldDisableSubmit}
         aria-busy={formik.isSubmitting || isSubmitting}

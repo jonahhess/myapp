@@ -1,18 +1,18 @@
 function JobCardSkeleton() {
   return (
-    <article className="job-card job-card--skeleton" aria-hidden="true">
-      <div className="job-card__header">
-        <div className="job-card__logo-wrap job-card__skeleton-block" />
+    <article className="job-card skeleton" aria-hidden="true">
+      <div className="header">
+        <div className="logo-wrap block" />
 
-        <div className="job-card__summary">
-          <div className="job-card__skeleton-block job-card__skeleton-title" />
-          <div className="job-card__skeleton-block job-card__skeleton-line" />
-          <div className="job-card__skeleton-block job-card__skeleton-line job-card__skeleton-line--short" />
+        <div className="summary">
+          <div className="block skeleton-title" />
+          <div className="block skeleton-line" />
+          <div className="block skeleton-line short" />
         </div>
       </div>
 
-      <div className="job-card__skeleton-block job-card__skeleton-line" />
-      <div className="job-card__skeleton-block job-card__skeleton-line job-card__skeleton-line--short" />
+      <div className="block skeleton-line" />
+      <div className="block skeleton-line short" />
     </article>
   );
 }

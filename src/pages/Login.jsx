@@ -40,7 +40,7 @@ function Login() {
   return (
     <main className="login-page">
       <h1>Login</h1>
-      <p className="login-page__intro">
+      <p className="intro">
         Welcome back to Jonah's Job Board. Sign in to save jobs, manage your
         recruiter postings, and continue where you left off.
       </p>
@@ -49,13 +49,13 @@ function Login() {
         isSubmitting={isSubmitting}
         submitError={submitError}
         formClassName="login-form"
-        groupClassName="login-form__group"
-        gridClassName="login-form__grid"
+        groupClassName="group"
+        gridClassName="grid"
         errorClassName="form-error"
-        submitButtonClassName="login-form__submit"
+        submitButtonClassName="submit"
       />
       {!!infoMessage ? <p className="form-success">{infoMessage}</p> : null}
-      <p className="login-form__hint">
+      <p className="hint">
         For security, repeated failed attempts may lock the account for up to 24
         hours.
       </p>

@@ -34,13 +34,13 @@ function Footer({
 
   return (
     <footer className="app-footer" aria-label="Site footer">
-      <div className="app-footer__grid">
-        <section className="app-footer__section" aria-label="Browse links">
-          <h2 className="app-footer__title">Browse</h2>
-          <ul className="app-footer__list">
+      <div className="grid">
+        <section className="section" aria-label="Browse links">
+          <h2 className="title">Browse</h2>
+          <ul className="list">
             {browseLinks.map((item) => (
               <li key={item.to}>
-                <Link className="app-footer__link" to={item.to}>
+                <Link className="link" to={item.to}>
                   {item.label}
                 </Link>
               </li>
@@ -48,12 +48,12 @@ function Footer({
           </ul>
         </section>
 
-        <section className="app-footer__section" aria-label="Account links">
-          <h2 className="app-footer__title">Account</h2>
-          <ul className="app-footer__list">
+        <section className="section" aria-label="Account links">
+          <h2 className="title">Account</h2>
+          <ul className="list">
             {accountLinks.map((item) => (
               <li key={item.to}>
-                <Link className="app-footer__link" to={item.to}>
+                <Link className="link" to={item.to}>
                   {item.label}
                 </Link>
               </li>
@@ -62,15 +62,12 @@ function Footer({
         </section>
 
         {recruiterLinks.length > 0 ? (
-          <section
-            className="app-footer__section"
-            aria-label="Recruiter shortcuts"
-          >
-            <h2 className="app-footer__title">Recruiter</h2>
-            <ul className="app-footer__list">
+          <section className="section" aria-label="Recruiter shortcuts">
+            <h2 className="title">Recruiter</h2>
+            <ul className="list">
               {recruiterLinks.map((item) => (
                 <li key={item.to}>
-                  <Link className="app-footer__link" to={item.to}>
+                  <Link className="link" to={item.to}>
                     {item.label}
                   </Link>
                 </li>
@@ -79,21 +76,16 @@ function Footer({
           </section>
         ) : null}
 
-        <section
-          className="app-footer__section"
-          aria-label="Platform information"
-        >
-          <h2 className="app-footer__title">Platform</h2>
-          <p className="app-footer__text">
+        <section className="section" aria-label="Platform information">
+          <h2 className="title">Platform</h2>
+          <p className="text">
             JWT-based auth, recruiter tools, and streamlined job discovery.
           </p>
-          <p className="app-footer__text">
-            Need help? Visit About for support details.
-          </p>
+          <p className="text">Need help? Visit About for support details.</p>
         </section>
       </div>
 
-      <div className="app-footer__bottom">
+      <div className="bottom">
         <small>
           {text} | © {currentYear}
         </small>

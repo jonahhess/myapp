@@ -23,26 +23,22 @@ function AdminUsersTable({ pageUsers, isDeletingUser, onDeleteRequest }) {
               <td>{entry.phone || "-"}</td>
               <td>{formatDate(entry.createdAt)}</td>
               <td>
-                <span
-                  className={`admin-badge ${entry.isRecruiter ? "admin-badge--on" : ""}`}
-                >
+                <span className={`badge${entry.isRecruiter ? " on" : ""}`}>
                   {entry.isRecruiter ? "Yes" : "No"}
                 </span>
               </td>
               <td>
-                <span
-                  className={`admin-badge ${entry.isAdmin ? "admin-badge--on" : ""}`}
-                >
+                <span className={`badge${entry.isAdmin ? " on" : ""}`}>
                   {entry.isAdmin ? "Yes" : "No"}
                 </span>
               </td>
               <td>
                 {entry.isAdmin ? (
-                  <span className="admin-table__muted">Protected</span>
+                  <span className="muted">Protected</span>
                 ) : (
                   <button
                     type="button"
-                    className="admin-table__delete"
+                    className="delete"
                     onClick={() => onDeleteRequest(entry)}
                     disabled={isDeletingUser}
                   >

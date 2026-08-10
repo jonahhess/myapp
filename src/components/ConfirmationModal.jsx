@@ -23,10 +23,10 @@ function ConfirmationModal({
       >
         <h2>{title || "Please confirm"}</h2>
         <p>{message || "Are you sure you want to continue?"}</p>
-        <div className="modal__actions">
+        <div className="actions">
           <button
             type="button"
-            className="modal__button"
+            className="button"
             onClick={onCancel}
             disabled={cancelDisabled}
           >
@@ -34,7 +34,7 @@ function ConfirmationModal({
           </button>
           <button
             type="button"
-            className="modal__button modal__button--danger"
+            className="button danger"
             onClick={onConfirm}
             disabled={confirmDisabled}
             aria-busy={confirmDisabled}

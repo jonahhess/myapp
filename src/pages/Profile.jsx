@@ -165,7 +165,7 @@ function ProfileContent({ user, logout, navigate }) {
         />
 
         <button
-          className="profile-form__submit"
+          className="submit"
           type="submit"
           disabled={formik.isSubmitting || !formik.isValid}
           aria-busy={formik.isSubmitting}

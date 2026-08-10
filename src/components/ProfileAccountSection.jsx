@@ -4,9 +4,9 @@ function ProfileAccountSection({
   onToggleRecruiterStatus,
 }) {
   return (
-    <fieldset className="profile-form__group">
+    <fieldset className="group">
       <legend>Account Information</legend>
-      <div className="profile-form__grid">
+      <div className="grid">
         <label htmlFor="profile-email">
           Email (read-only)
           <input
@@ -15,7 +15,7 @@ function ProfileAccountSection({
             value={formik.values.email}
             readOnly
             disabled
-            className="profile-form__readonly"
+            className="readonly"
           />
         </label>
 
@@ -26,7 +26,7 @@ function ProfileAccountSection({
             value="********"
             readOnly
             disabled
-            className="profile-form__readonly"
+            className="readonly"
           />
         </label>
 
@@ -37,7 +37,7 @@ function ProfileAccountSection({
             value={formik.values.isAdmin ? "Admin" : "Standard user"}
             readOnly
             disabled
-            className="profile-form__readonly"
+            className="readonly"
           />
         </label>
 
@@ -48,14 +48,14 @@ function ProfileAccountSection({
             value={formik.values.isRecruiter ? "Recruiter" : "Not recruiter"}
             readOnly
             disabled
-            className="profile-form__readonly"
+            className="readonly"
           />
         </label>
       </div>
 
       <button
         type="button"
-        className="profile-form__toggle"
+        className="toggle"
         onClick={onToggleRecruiterStatus}
         disabled={isTogglingRecruiter}
         aria-busy={isTogglingRecruiter}

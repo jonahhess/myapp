@@ -45,16 +45,16 @@ function Register() {
   return (
     <main className="register-page">
       <h1>Create Account</h1>
-      <p className="register-page__intro">
+      <p className="intro">
         Create your account to save jobs, track applications, and personalize
         your experience on Jonah's Job Board.
       </p>
 
       <form className="register-form" onSubmit={formik.handleSubmit} noValidate>
         {REGISTER_FIELD_GROUPS.map((group) => (
-          <fieldset key={group.legend} className="register-form__group">
+          <fieldset key={group.legend} className="group">
             <legend>{group.legend}</legend>
-            <div className="register-form__grid">
+            <div className="grid">
               {group.fields.map((field) => (
                 <FormInput
                   key={field.name}
@@ -70,9 +70,9 @@ function Register() {
           </fieldset>
         ))}
 
-        <fieldset className="register-form__group">
+        <fieldset className="group">
           <legend>Account Type</legend>
-          <label className="register-form__checkbox">
+          <label className="checkbox">
             <input
               type="checkbox"
               name="isRecruiter"
@@ -81,7 +81,7 @@ function Register() {
             />
             Register as recruiter
           </label>
-          <p className="register-form__hint">
+          <p className="hint">
             Administrator registration is not available from this form.
           </p>
         </fieldset>
@@ -96,7 +96,7 @@ function Register() {
         ) : null}
 
         <button
-          className="register-form__submit"
+          className="submit"
           type="submit"
           disabled={formik.isSubmitting || !formik.isValid}
           aria-busy={formik.isSubmitting}
