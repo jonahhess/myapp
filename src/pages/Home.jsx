@@ -31,8 +31,9 @@ function Home() {
       onToggleSuccess: () => reloadJobs({ background: true }),
       failureMessage: "Failed to update saved status.",
     });
+  const totalJobsCount = jobs.length;
 
-  const totalPages = Math.max(1, Math.ceil(jobs.length / JOBS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(totalJobsCount / JOBS_PER_PAGE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
   const pageJobs = useMemo(
@@ -58,7 +59,7 @@ function Home() {
         ) : null}
         {!isLoading && !errorMessage && (
           <p>
-            Showing {pageJobs.length} jobs on this page, {jobs.length} total.
+            Showing {pageJobs.length} jobs on this page, {totalJobsCount} total.
             Use Search for advanced filtering.
           </p>
         )}
@@ -105,7 +106,7 @@ function Home() {
         )}
       </section>
 
-      {!isLoading && !errorMessage && jobs.length > JOBS_PER_PAGE && (
+      {!isLoading && !errorMessage && totalJobsCount > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
