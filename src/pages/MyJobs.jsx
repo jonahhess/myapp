@@ -7,7 +7,7 @@ import useMyJobs from "./myJobs/useMyJobs";
 function MyJobs() {
   const navigate = useNavigate();
   const {
-    jobs,
+    totalJobsCount,
     pageJobs,
     isLoading,
     errorMessage,
@@ -51,7 +51,7 @@ function MyJobs() {
 
       <MyJobsListSection
         pageJobs={pageJobs}
-        jobs={jobs}
+        totalJobsCount={totalJobsCount}
         isLoading={isLoading}
         errorMessage={errorMessage}
         isDeletingJob={isDeletingJob}

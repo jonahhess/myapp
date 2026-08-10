@@ -9,7 +9,7 @@ const LazyJobCard = lazy(() => import("../JobCard.jsx"));
 
 function MyJobsListSection({
   pageJobs,
-  jobs,
+  totalJobsCount,
   isLoading,
   errorMessage,
   isDeletingJob,
@@ -70,7 +70,7 @@ function MyJobsListSection({
         </Suspense>
       )}
 
-      {!isLoading && !errorMessage && jobs.length > JOBS_PER_PAGE && (
+      {!isLoading && !errorMessage && totalJobsCount > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}

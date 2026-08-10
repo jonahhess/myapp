@@ -51,6 +51,7 @@ export default function useMyJobs() {
   }, []);
 
   const totalPages = Math.max(1, Math.ceil(jobs.length / JOBS_PER_PAGE));
+  const totalJobsCount = jobs.length;
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
   const pageJobs = useMemo(
@@ -97,6 +98,7 @@ export default function useMyJobs() {
 
   return {
     jobs,
+    totalJobsCount,
     pageJobs,
     isLoading,
     errorMessage,
