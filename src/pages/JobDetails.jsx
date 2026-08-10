@@ -1,11 +1,10 @@
 import { Suspense, use } from "react";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
+import { jobDetailsResourceCache } from "./jobResourceCache";
 import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeJob } from "../utils/normalizers";
-
-const jobDetailsResourceCache = new Map();
 
 function readJobDetailsResource(jobId) {
   const key = String(jobId || "");

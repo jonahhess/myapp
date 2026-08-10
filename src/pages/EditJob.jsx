@@ -4,11 +4,14 @@ import JobForm from "../components/JobForm.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
+import {
+  editJobResourceCache,
+  resetJobResourceCache,
+} from "./jobResourceCache";
+import { clearMyJobsCache } from "./myJobs/myJobsCache";
 import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeJob } from "../utils/normalizers";
-
-const editJobResourceCache = new Map();
 
 function readEditJobResource(jobId) {
   const key = String(jobId || "");
@@ -63,6 +66,8 @@ function EditJobContent({ id, user, navigate, reloadJobs }) {
 
     try {
       await jobsService.updateJob(id, payload);
+      clearMyJobsCache();
+      resetJobResourceCache(id);
       await reloadJobs?.({ background: true });
       setSuccessToast("Job updated successfully.");
       if (user?.isAdmin) {

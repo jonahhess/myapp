@@ -4,6 +4,11 @@ import useListResourceController from "../../hooks/useListResourceController";
 import useAsyncMutation from "../../hooks/useAsyncMutation";
 import jobsService from "../../services/jobsService";
 import { normalizeJob } from "../../utils/normalizers";
+import {
+  clearMyJobsCache,
+  readMyJobsCache,
+  writeMyJobsCache,
+} from "./myJobsCache";
 import { JOBS_PER_PAGE, readJobsPayload } from "./myJobsUtils";
 
 export default function useMyJobs() {
@@ -28,8 +33,18 @@ export default function useMyJobs() {
     safeCurrentPage,
     pageItems: pageJobs,
   } = useListResourceController({
-    fetcher: jobsService.getMyJobs,
-    mapItems: (payload) => readJobsPayload(payload).map(normalizeJob),
+    fetcher: async () => {
+      const cachedJobs = readMyJobsCache();
+      if (cachedJobs) {
+        return cachedJobs;
+      }
+
+      const payload = await jobsService.getMyJobs();
+      const normalizedJobs = readJobsPayload(payload).map(normalizeJob);
+      writeMyJobsCache(normalizedJobs);
+      return normalizedJobs;
+    },
+    mapItems: (payload) => payload,
     errorMessage: "Failed to load your jobs.",
     clearItemsOnError: true,
     pageSize: JOBS_PER_PAGE,
@@ -57,6 +72,7 @@ export default function useMyJobs() {
     try {
       await runDeleteJob(() => jobsService.deleteJob(targetJob.id), {
         onSuccess: async () => {
+          clearMyJobsCache();
           setJobs((prevJobs) =>
             prevJobs.filter((job) => job.id !== targetJob.id),
           );

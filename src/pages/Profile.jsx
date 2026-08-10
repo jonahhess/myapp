@@ -17,6 +17,15 @@ import { normalizeUserProfileUpdatePayload } from "../utils/requestNormalization
 
 const profileResourceCache = new Map();
 
+function resetProfileResourceCache(userId) {
+  const key = String(userId || "").trim();
+  if (!key) {
+    return;
+  }
+
+  profileResourceCache.delete(key);
+}
+
 function readProfileResource(userId) {
   const key = String(userId || "");
 
@@ -76,6 +85,7 @@ function ProfileContent({ user, logout, navigate }) {
 
       try {
         await usersService.updateUserById(user.id, payload);
+        resetProfileResourceCache(user.id);
         setSuccessMessage("Profile updated successfully.");
       } catch (error) {
         setSubmitError(
