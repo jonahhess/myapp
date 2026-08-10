@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useJobs } from "../../contexts/JobsContext.jsx";
+import usePagedCollection from "../../hooks/usePagedCollection";
 import jobsService from "../../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../../utils/errors";
 import { normalizeJob } from "../../utils/normalizers";
@@ -50,14 +51,16 @@ export default function useMyJobs() {
     };
   }, []);
 
-  const totalPages = Math.max(1, Math.ceil(jobs.length / JOBS_PER_PAGE));
-  const totalJobsCount = jobs.length;
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
-  const pageJobs = useMemo(
-    () => jobs.slice(pageStart, pageStart + JOBS_PER_PAGE),
-    [jobs, pageStart],
-  );
+  const {
+    totalCount: totalJobsCount,
+    totalPages,
+    safeCurrentPage,
+    pageItems: pageJobs,
+  } = usePagedCollection({
+    items: jobs,
+    currentPage,
+    pageSize: JOBS_PER_PAGE,
+  });
 
   const handleDeleteRequest = (job) => {
     if (isDeletingJob) {

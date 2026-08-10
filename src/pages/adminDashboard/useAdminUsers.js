@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import usePagedCollection from "../../hooks/usePagedCollection";
 import usersService from "../../services/usersService";
 import { getUserFriendlyErrorMessage } from "../../utils/errors";
 import {
@@ -68,15 +69,16 @@ export default function useAdminUsers() {
       );
     });
   }, [query, users]);
-  const filteredUsersCount = filteredUsers.length;
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredUsersCount / USERS_PER_PAGE),
-  );
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const pageStart = (safeCurrentPage - 1) * USERS_PER_PAGE;
-  const pageUsers = filteredUsers.slice(pageStart, pageStart + USERS_PER_PAGE);
+  const {
+    totalCount: filteredUsersCount,
+    totalPages,
+    safeCurrentPage,
+    pageItems: pageUsers,
+  } = usePagedCollection({
+    items: filteredUsers,
+    currentPage,
+    pageSize: USERS_PER_PAGE,
+  });
 
   const handleQueryChange = (nextQuery) => {
     setQuery(nextQuery);

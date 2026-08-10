@@ -1,7 +1,7 @@
 import { Suspense, lazy } from "react";
+import CollectionStateSwitch from "../CollectionStateSwitch.jsx";
 import EmptyState from "../EmptyState.jsx";
 import JobCardSkeletonStack from "../JobCardSkeletonStack.jsx";
-import LoadingSpinner from "../LoadingSpinner.jsx";
 
 const LazyJobCard = lazy(() => import("../JobCard.jsx"));
 
@@ -25,28 +25,20 @@ function JobsSearchResults({
       ) : null}
       {!isLoading && !errorMessage && <p>{filteredJobsCount} jobs found</p>}
 
-      {isLoading ? (
-        <>
-          <LoadingSpinner label="Loading jobs..." />
-          <JobCardSkeletonStack />
-        </>
-      ) : null}
-
-      {!isLoading && !!errorMessage && (
-        <section role="alert" aria-live="polite">
-          <h3>Could not load jobs</h3>
-          <p>{errorMessage}</p>
-        </section>
-      )}
-
-      {!isLoading && !errorMessage && filteredJobsCount === 0 && (
-        <EmptyState
-          title="No jobs found"
-          description="Try adjusting your filters or search terms."
-        />
-      )}
-
-      {!isLoading && !errorMessage && filteredJobsCount > 0 && (
+      <CollectionStateSwitch
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        isEmpty={filteredJobsCount === 0}
+        loadingLabel="Loading jobs..."
+        errorTitle="Could not load jobs"
+        loadingFallback={<JobCardSkeletonStack />}
+        emptyState={
+          <EmptyState
+            title="No jobs found"
+            description="Try adjusting your filters or search terms."
+          />
+        }
+      >
         <Suspense
           fallback={
             <>
@@ -64,7 +56,7 @@ function JobsSearchResults({
             />
           ))}
         </Suspense>
-      )}
+      </CollectionStateSwitch>
     </section>
   );
 }

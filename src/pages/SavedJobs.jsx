@@ -1,11 +1,12 @@
 import { Suspense, lazy, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
-import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import Pagination from "../components/Pagination.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
+import usePagedCollection from "../hooks/usePagedCollection";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 
 const LazyJobCard = lazy(() => import("../components/JobCard.jsx"));
@@ -34,12 +35,16 @@ function SavedJobs() {
     () => jobs.filter((job) => isSavedByCurrentUser(job)),
     [jobs, isSavedByCurrentUser],
   );
-  const savedJobsCount = savedJobs.length;
-
-  const totalPages = Math.max(1, Math.ceil(savedJobsCount / JOBS_PER_PAGE));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
-  const pageJobs = savedJobs.slice(pageStart, pageStart + JOBS_PER_PAGE);
+  const {
+    totalCount: savedJobsCount,
+    totalPages,
+    safeCurrentPage,
+    pageItems: pageJobs,
+  } = usePagedCollection({
+    items: savedJobs,
+    currentPage,
+    pageSize: JOBS_PER_PAGE,
+  });
 
   return (
     <main className="job-page">
@@ -54,30 +59,27 @@ function SavedJobs() {
         </p>
       ) : null}
 
-      {isLoading ? (
-        <>
-          <LoadingSpinner label="Loading saved jobs..." />
-          <JobCardSkeletonStack />
-        </>
-      ) : null}
-
-      {!isLoading && !!errorMessage && (
-        <section role="alert" aria-live="polite">
-          <h2>Could not load saved jobs</h2>
-          <p>{errorMessage}</p>
-        </section>
-      )}
-
-      {!isLoading && !errorMessage && savedJobsCount === 0 && (
-        <EmptyState
-          title="No saved jobs yet"
-          description="Save jobs from Home or Search and they will appear here."
-          actionLabel="Browse Jobs"
-          onAction={() => navigate("/jobs")}
-        />
-      )}
-
-      {!isLoading && !errorMessage && pageJobs.length > 0 && (
+      <CollectionStateSwitch
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        isEmpty={savedJobsCount === 0}
+        loadingLabel="Loading saved jobs..."
+        loadingFallback={<JobCardSkeletonStack />}
+        errorFallback={
+          <section role="alert" aria-live="polite">
+            <h2>Could not load saved jobs</h2>
+            <p>{errorMessage}</p>
+          </section>
+        }
+        emptyState={
+          <EmptyState
+            title="No saved jobs yet"
+            description="Save jobs from Home or Search and they will appear here."
+            actionLabel="Browse Jobs"
+            onAction={() => navigate("/jobs")}
+          />
+        }
+      >
         <Suspense
           fallback={
             <>
@@ -95,7 +97,7 @@ function SavedJobs() {
             />
           ))}
         </Suspense>
-      )}
+      </CollectionStateSwitch>
 
       {!isLoading && !errorMessage && savedJobsCount > JOBS_PER_PAGE && (
         <Pagination

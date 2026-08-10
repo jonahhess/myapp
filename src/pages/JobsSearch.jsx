@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
 import { useSearchUi } from "../contexts/SearchContext.jsx";
 import useDebounce from "../hooks/useDebounce";
+import usePagedCollection from "../hooks/usePagedCollection";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 import { filterJobsByCriteria } from "./jobsSearch/filterJobs";
 
@@ -43,12 +44,16 @@ function JobsSearch() {
     () => filterJobsByCriteria(jobs, debouncedFilters),
     [debouncedFilters, jobs],
   );
-  const filteredJobsCount = filteredJobs.length;
-
-  const totalPages = Math.max(1, Math.ceil(filteredJobsCount / JOBS_PER_PAGE));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
-  const pageJobs = filteredJobs.slice(pageStart, pageStart + JOBS_PER_PAGE);
+  const {
+    totalCount: filteredJobsCount,
+    totalPages,
+    safeCurrentPage,
+    pageItems: pageJobs,
+  } = usePagedCollection({
+    items: filteredJobs,
+    currentPage,
+    pageSize: JOBS_PER_PAGE,
+  });
 
   return (
     <main className="jobs-search-page">

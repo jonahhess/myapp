@@ -1,10 +1,11 @@
-import { Suspense, lazy, useMemo, useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
-import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import Pagination from "../components/Pagination.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import usePagedCollection from "../hooks/usePagedCollection";
 import { useJobs } from "../contexts/JobsContext.jsx";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 
@@ -31,15 +32,16 @@ function Home() {
       onToggleSuccess: () => reloadJobs({ background: true }),
       failureMessage: "Failed to update saved status.",
     });
-  const totalJobsCount = jobs.length;
-
-  const totalPages = Math.max(1, Math.ceil(totalJobsCount / JOBS_PER_PAGE));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
-  const pageJobs = useMemo(
-    () => jobs.slice(pageStart, pageStart + JOBS_PER_PAGE),
-    [jobs, pageStart],
-  );
+  const {
+    totalCount: totalJobsCount,
+    totalPages,
+    safeCurrentPage,
+    pageItems: pageJobs,
+  } = usePagedCollection({
+    items: jobs,
+    currentPage,
+    pageSize: JOBS_PER_PAGE,
+  });
 
   return (
     <main className="home-page">
@@ -64,28 +66,20 @@ function Home() {
           </p>
         )}
 
-        {isLoading ? (
-          <>
-            <LoadingSpinner label="Loading jobs..." />
-            <JobCardSkeletonStack />
-          </>
-        ) : null}
-
-        {!isLoading && !!errorMessage && (
-          <section role="alert" aria-live="polite">
-            <h3>Could not load jobs</h3>
-            <p>{errorMessage}</p>
-          </section>
-        )}
-
-        {!isLoading && !errorMessage && pageJobs.length === 0 && (
-          <EmptyState
-            title="No jobs found"
-            description="Try a different search term or check back later for new postings."
-          />
-        )}
-
-        {!isLoading && !errorMessage && pageJobs.length > 0 && (
+        <CollectionStateSwitch
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          isEmpty={pageJobs.length === 0}
+          loadingLabel="Loading jobs..."
+          errorTitle="Could not load jobs"
+          loadingFallback={<JobCardSkeletonStack />}
+          emptyState={
+            <EmptyState
+              title="No jobs found"
+              description="Try a different search term or check back later for new postings."
+            />
+          }
+        >
           <Suspense
             fallback={
               <>
@@ -103,7 +97,7 @@ function Home() {
               />
             ))}
           </Suspense>
-        )}
+        </CollectionStateSwitch>
       </section>
 
       {!isLoading && !errorMessage && totalJobsCount > JOBS_PER_PAGE && (
