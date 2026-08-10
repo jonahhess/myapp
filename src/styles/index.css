@@ -914,6 +914,11 @@ code {
   cursor: pointer;
 }
 
+.jobs-search-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .admin-page__toolbar {
   display: grid;
   gap: 6px;
