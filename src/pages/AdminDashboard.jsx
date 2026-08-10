@@ -15,7 +15,7 @@ function AdminDashboard() {
     pendingDeleteUser,
     errorMessage,
     successMessage,
-    filteredUsers,
+    filteredUsersCount,
     pageUsers,
     totalPages,
     safeCurrentPage,
@@ -46,7 +46,7 @@ function AdminDashboard() {
 
       {isLoading ? <LoadingSpinner label="Loading users..." /> : null}
 
-      {!isLoading && filteredUsers.length === 0 && (
+      {!isLoading && filteredUsersCount === 0 && (
         <EmptyState
           title={query ? "No users match your search" : "No users found"}
           description={
@@ -57,7 +57,7 @@ function AdminDashboard() {
         />
       )}
 
-      {!isLoading && filteredUsers.length > 0 && (
+      {!isLoading && filteredUsersCount > 0 && (
         <AdminUsersTable
           pageUsers={pageUsers}
           isDeletingUser={isDeletingUser}
@@ -65,7 +65,7 @@ function AdminDashboard() {
         />
       )}
 
-      {!isLoading && filteredUsers.length > USERS_PER_PAGE && (
+      {!isLoading && filteredUsersCount > USERS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}

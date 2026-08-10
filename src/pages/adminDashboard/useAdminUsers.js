@@ -68,10 +68,11 @@ export default function useAdminUsers() {
       );
     });
   }, [query, users]);
+  const filteredUsersCount = filteredUsers.length;
 
   const totalPages = Math.max(
     1,
-    Math.ceil(filteredUsers.length / USERS_PER_PAGE),
+    Math.ceil(filteredUsersCount / USERS_PER_PAGE),
   );
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const pageStart = (safeCurrentPage - 1) * USERS_PER_PAGE;
@@ -130,7 +131,7 @@ export default function useAdminUsers() {
     pendingDeleteUser,
     errorMessage,
     successMessage,
-    filteredUsers,
+    filteredUsersCount,
     pageUsers,
     totalPages,
     safeCurrentPage,
