@@ -81,7 +81,7 @@ function CreateJob() {
   return (
     <main className="job-page">
       <h1>Create Job</h1>
-      <p className="job-page__intro">
+      <p className="intro">
         Publish a new role. Required fields are validated before submission.
       </p>
 

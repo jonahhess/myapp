@@ -47,7 +47,7 @@ function SavedJobs() {
   return (
     <main className="job-page">
       <h1>Saved Jobs</h1>
-      <p className="job-page__intro">
+      <p className="intro">
         Jobs you bookmarked for later review and applications.
       </p>
 

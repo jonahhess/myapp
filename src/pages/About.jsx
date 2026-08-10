@@ -2,9 +2,9 @@ function About() {
   return (
     <main className="about-page">
       <section className="about-hero" aria-labelledby="about-title">
-        <p className="about-hero__eyebrow">About Jonah's Job Board</p>
+        <p className="eyebrow">About Jonah's Job Board</p>
         <h1 id="about-title">Built for Better Hiring Conversations</h1>
-        <p className="about-hero__lead">
+        <p className="lead">
           Jonah's Job Board helps candidates discover meaningful roles,
           recruiters publish high-quality opportunities, and administrators keep
           the marketplace clear, safe, and trustworthy.

@@ -53,7 +53,7 @@ function JobsSearch() {
   return (
     <main className="jobs-search-page">
       <h1>Search Jobs</h1>
-      <p className="jobs-search-page__intro">
+      <p className="intro">
         Filter by role, company, category, location, experience, and salary to
         find the most relevant opportunities.
       </p>

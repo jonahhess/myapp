@@ -46,7 +46,7 @@ function Home() {
   return (
     <main className="home-page">
       <h1>Find Your Next Opportunity</h1>
-      <p className="home-page__intro">
+      <p className="intro">
         Jonah's Job Board connects candidates with verified opportunities and
         gives recruiters a focused space to publish, manage, and promote open
         positions.

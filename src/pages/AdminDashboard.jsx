@@ -29,7 +29,7 @@ function AdminDashboard() {
   return (
     <main className="admin-page">
       <h1>Admin Management</h1>
-      <p className="admin-page__intro">
+      <p className="intro">
         Manage users, monitor account types, and moderate platform access.
       </p>
 

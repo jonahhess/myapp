@@ -15,7 +15,7 @@ function FormInput({
   inputProps,
   wrapperClassName = "",
   errorClassName = "form-error",
-  invalidClassName = "form-input--invalid",
+  invalidClassName = "invalid",
 }) {
   const resolvedId = id || `${prefix ? `${prefix}-` : ""}${name}`;
   const errorId = `${prefix ? `${prefix}-` : ""}${name}-error`;

@@ -84,7 +84,7 @@ function JobForm({
             id="job-description"
             name="description"
             rows="6"
-            className={hasDescriptionError ? "form-input--invalid" : ""}
+            className={hasDescriptionError ? "invalid" : ""}
             aria-invalid={hasDescriptionError}
             aria-describedby={
               hasDescriptionError ? "job-description-error" : undefined

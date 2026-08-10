@@ -102,7 +102,7 @@ function EditJobContent({ id, user, navigate, reloadJobs }) {
 
   return (
     <>
-      <p className="job-page__intro">
+      <p className="intro">
         Update role details, contact information, and media.
       </p>
 

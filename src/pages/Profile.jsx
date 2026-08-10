@@ -138,7 +138,7 @@ function ProfileContent({ user, logout, navigate }) {
 
   return (
     <>
-      <p className="profile-page__intro">
+      <p className="intro">
         Keep your profile information accurate. Email, password, and
         administrator status cannot be changed from this form.
       </p>

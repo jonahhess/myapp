@@ -27,16 +27,16 @@ function MyJobs() {
 
   return (
     <main className="job-page">
-      <header className="job-page__header">
+      <header className="header">
         <div>
           <h1>My Posted Jobs</h1>
-          <p className="job-page__intro">
+          <p className="intro">
             Recruiter dashboard for managing your published positions.
           </p>
         </div>
         <button
           type="button"
-          className="job-page__cta"
+          className="cta"
           onClick={() => navigate("/create/jobs")}
         >
           Post a New Job
