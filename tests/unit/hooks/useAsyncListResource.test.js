@@ -75,4 +75,27 @@ describe("useAsyncListResource", () => {
 
     expect(result.current.items).toEqual(["updated", "list"]);
   });
+
+  it("skips loading when disabled", async () => {
+    const fetcher = vi.fn().mockResolvedValueOnce([1, 2]);
+    const mapItems = vi.fn((payload) => payload);
+
+    const { result } = renderHook(() =>
+      useAsyncListResource({
+        fetcher,
+        mapItems,
+        enabled: false,
+      }),
+    );
+
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.items).toEqual([]);
+    expect(fetcher).not.toHaveBeenCalled();
+
+    await act(async () => {
+      await expect(result.current.reload()).resolves.toEqual([]);
+    });
+
+    expect(fetcher).not.toHaveBeenCalled();
+  });
 });

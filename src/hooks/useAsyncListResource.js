@@ -6,13 +6,18 @@ export default function useAsyncListResource({
   mapItems,
   errorMessage = "Failed to load data.",
   clearItemsOnError = false,
+  enabled = true,
 }) {
   const isMountedRef = useRef(true);
   const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(enabled);
   const [loadError, setLoadError] = useState("");
 
   const reload = useCallback(async () => {
+    if (!enabled) {
+      return [];
+    }
+
     if (isMountedRef.current) {
       setIsLoading(true);
       setLoadError("");
@@ -39,10 +44,17 @@ export default function useAsyncListResource({
         setIsLoading(false);
       }
     }
-  }, [clearItemsOnError, errorMessage, fetcher, mapItems]);
+  }, [clearItemsOnError, enabled, errorMessage, fetcher, mapItems]);
 
   useEffect(() => {
     isMountedRef.current = true;
+
+    if (!enabled) {
+      setIsLoading(false);
+      return () => {
+        isMountedRef.current = false;
+      };
+    }
 
     const load = async () => {
       try {
@@ -57,7 +69,7 @@ export default function useAsyncListResource({
     return () => {
       isMountedRef.current = false;
     };
-  }, [reload]);
+  }, [enabled, reload]);
 
   return {
     items,
