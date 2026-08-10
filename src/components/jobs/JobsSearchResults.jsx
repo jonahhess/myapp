@@ -18,14 +18,12 @@ function JobsSearchResults({
   return (
     <section aria-label="Search results">
       <h2>Results</h2>
-      {saveError ? (
+      {!!saveError ? (
         <p className="form-error" role="alert">
           {saveError}
         </p>
       ) : null}
-      {!isLoading && !errorMessage ? (
-        <p>{filteredJobs.length} jobs found</p>
-      ) : null}
+      {!isLoading && !errorMessage && <p>{filteredJobs.length} jobs found</p>}
 
       {isLoading ? (
         <>
@@ -36,21 +34,21 @@ function JobsSearchResults({
         </>
       ) : null}
 
-      {!isLoading && errorMessage ? (
+      {!isLoading && !!errorMessage && (
         <section role="alert" aria-live="polite">
           <h3>Could not load jobs</h3>
           <p>{errorMessage}</p>
         </section>
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && filteredJobs.length === 0 ? (
+      {!isLoading && !errorMessage && filteredJobs.length === 0 && (
         <EmptyState
           title="No jobs found"
           description="Try adjusting your filters or search terms."
         />
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && filteredJobs.length > 0 ? (
+      {!isLoading && !errorMessage && filteredJobs.length > 0 && (
         <Suspense
           fallback={
             <>
@@ -70,7 +68,7 @@ function JobsSearchResults({
             />
           ))}
         </Suspense>
-      ) : null}
+      )}
     </section>
   );
 }

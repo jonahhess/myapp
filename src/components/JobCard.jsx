@@ -77,13 +77,15 @@ function JobCard({
           <h3 className="job-card__title">{job.title}</h3>
           <p className="job-card__company">{job.company}</p>
           <p className="job-card__location">{job.location}</p>
-          {detailsMeta ? <p className="job-card__meta">{detailsMeta}</p> : null}
+          {!!detailsMeta ? (
+            <p className="job-card__meta">{detailsMeta}</p>
+          ) : null}
         </div>
       </div>
 
-      {salaryText ? <p className="job-card__salary">{salaryText}</p> : null}
+      {!!salaryText ? <p className="job-card__salary">{salaryText}</p> : null}
 
-      {publicationDate ? (
+      {!!publicationDate ? (
         <p className="job-card__date">Published: {publicationDate}</p>
       ) : null}
 
@@ -98,11 +100,11 @@ function JobCard({
         {isSavePending ? "..." : resolvedSavedState ? "★" : "☆"}
       </button>
 
-      {job.description ? (
+      {!!job.description ? (
         <p className="job-card__description">{job.description}</p>
       ) : null}
 
-      {job.applyLink ? (
+      {!!job.applyLink ? (
         <p className="job-card__apply">
           <a href={job.applyLink} target="_blank" rel="noreferrer">
             Apply now

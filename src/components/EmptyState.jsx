@@ -8,7 +8,7 @@ function EmptyState({
     <section className="empty-state">
       <h2>{title}</h2>
       <p>{description}</p>
-      {actionLabel && onAction ? (
+      {!!actionLabel && !!onAction && (
         <button
           type="button"
           className="empty-state__action"
@@ -16,7 +16,7 @@ function EmptyState({
         >
           {actionLabel}
         </button>
-      ) : null}
+      )}
     </section>
   );
 }

@@ -47,7 +47,7 @@ function SavedJobs() {
         Jobs you bookmarked for later review and applications.
       </p>
 
-      {saveError ? (
+      {!!saveError ? (
         <p className="form-error" role="alert">
           {saveError}
         </p>
@@ -62,23 +62,23 @@ function SavedJobs() {
         </>
       ) : null}
 
-      {!isLoading && errorMessage ? (
+      {!isLoading && !!errorMessage && (
         <section role="alert" aria-live="polite">
           <h2>Could not load saved jobs</h2>
           <p>{errorMessage}</p>
         </section>
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && savedJobs.length === 0 ? (
+      {!isLoading && !errorMessage && savedJobs.length === 0 && (
         <EmptyState
           title="No saved jobs yet"
           description="Save jobs from Home or Search and they will appear here."
           actionLabel="Browse Jobs"
           onAction={() => navigate("/jobs")}
         />
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && pageJobs.length > 0 ? (
+      {!isLoading && !errorMessage && pageJobs.length > 0 && (
         <Suspense
           fallback={
             <>
@@ -98,15 +98,15 @@ function SavedJobs() {
             />
           ))}
         </Suspense>
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && savedJobs.length > JOBS_PER_PAGE ? (
+      {!isLoading && !errorMessage && savedJobs.length > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-      ) : null}
+      )}
     </main>
   );
 }

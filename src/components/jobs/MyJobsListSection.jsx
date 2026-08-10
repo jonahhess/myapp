@@ -32,23 +32,23 @@ function MyJobsListSection({
         </>
       ) : null}
 
-      {!isLoading && errorMessage ? (
+      {!isLoading && !!errorMessage && (
         <section role="alert" aria-live="polite">
           <h2>Could not load your jobs</h2>
           <p>{errorMessage}</p>
         </section>
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && pageJobs.length === 0 ? (
+      {!isLoading && !errorMessage && pageJobs.length === 0 && (
         <EmptyState
           title="No jobs posted yet"
           description="Create your first job post to start receiving applications."
           actionLabel="Publish Your First Job"
           onAction={onCreateFirstJob}
         />
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && pageJobs.length > 0 ? (
+      {!isLoading && !errorMessage && pageJobs.length > 0 && (
         <Suspense
           fallback={
             <>
@@ -72,15 +72,15 @@ function MyJobsListSection({
             />
           ))}
         </Suspense>
-      ) : null}
+      )}
 
-      {!isLoading && !errorMessage && jobs.length > JOBS_PER_PAGE ? (
+      {!isLoading && !errorMessage && jobs.length > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
           onPageChange={onPageChange}
         />
-      ) : null}
+      )}
     </>
   );
 }

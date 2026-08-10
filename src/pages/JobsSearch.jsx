@@ -77,13 +77,13 @@ function JobsSearch() {
         isSavePending={isSavePending}
       />
 
-      {!isLoading && !errorMessage && filteredJobs.length > JOBS_PER_PAGE ? (
+      {!isLoading && !errorMessage && filteredJobs.length > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-      ) : null}
+      )}
     </main>
   );
 }

@@ -35,16 +35,18 @@ function AdminDashboard() {
 
       <AdminUsersToolbar query={query} onQueryChange={handleQueryChange} />
 
-      {errorMessage ? (
+      {!!errorMessage ? (
         <p className="form-error" role="alert">
           {errorMessage}
         </p>
       ) : null}
-      {successMessage ? <p className="form-success">{successMessage}</p> : null}
+      {!!successMessage ? (
+        <p className="form-success">{successMessage}</p>
+      ) : null}
 
       {isLoading ? <LoadingSpinner label="Loading users..." /> : null}
 
-      {!isLoading && filteredUsers.length === 0 ? (
+      {!isLoading && filteredUsers.length === 0 && (
         <EmptyState
           title={query ? "No users match your search" : "No users found"}
           description={
@@ -53,23 +55,23 @@ function AdminDashboard() {
               : "No users are available to manage right now."
           }
         />
-      ) : null}
+      )}
 
-      {!isLoading && filteredUsers.length > 0 ? (
+      {!isLoading && filteredUsers.length > 0 && (
         <AdminUsersTable
           pageUsers={pageUsers}
           isDeletingUser={isDeletingUser}
           onDeleteRequest={handleDeleteRequest}
         />
-      ) : null}
+      )}
 
-      {!isLoading && filteredUsers.length > USERS_PER_PAGE ? (
+      {!isLoading && filteredUsers.length > USERS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-      ) : null}
+      )}
 
       <ConfirmationModal
         isOpen={Boolean(pendingDeleteUser)}

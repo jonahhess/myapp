@@ -47,7 +47,7 @@ function MyJobs() {
         </button>
       </header>
 
-      {toastMessage ? <p className="form-success">{toastMessage}</p> : null}
+      {!!toastMessage ? <p className="form-success">{toastMessage}</p> : null}
 
       <MyJobsListSection
         pageJobs={pageJobs}

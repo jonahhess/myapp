@@ -129,7 +129,7 @@ function EditJob() {
         Update role details, contact information, and media.
       </p>
 
-      {successToast ? <p className="form-success">{successToast}</p> : null}
+      {!!successToast ? <p className="form-success">{successToast}</p> : null}
 
       <JobForm
         initialValues={job}

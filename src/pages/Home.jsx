@@ -51,17 +51,17 @@ function Home() {
 
       <section aria-label="Job listings">
         <h2>All Job Listings</h2>
-        {saveError ? (
+        {!!saveError ? (
           <p className="form-error" role="alert">
             {saveError}
           </p>
         ) : null}
-        {!isLoading && !errorMessage ? (
+        {!isLoading && !errorMessage && (
           <p>
             Showing {pageJobs.length} jobs on this page, {jobs.length} total.
             Use Search for advanced filtering.
           </p>
-        ) : null}
+        )}
 
         {isLoading ? (
           <>
@@ -72,21 +72,21 @@ function Home() {
           </>
         ) : null}
 
-        {!isLoading && errorMessage ? (
+        {!isLoading && !!errorMessage && (
           <section role="alert" aria-live="polite">
             <h3>Could not load jobs</h3>
             <p>{errorMessage}</p>
           </section>
-        ) : null}
+        )}
 
-        {!isLoading && !errorMessage && pageJobs.length === 0 ? (
+        {!isLoading && !errorMessage && pageJobs.length === 0 && (
           <EmptyState
             title="No jobs found"
             description="Try a different search term or check back later for new postings."
           />
-        ) : null}
+        )}
 
-        {!isLoading && !errorMessage && pageJobs.length > 0 ? (
+        {!isLoading && !errorMessage && pageJobs.length > 0 && (
           <Suspense
             fallback={
               <>
@@ -106,16 +106,16 @@ function Home() {
               />
             ))}
           </Suspense>
-        ) : null}
+        )}
       </section>
 
-      {!isLoading && !errorMessage && jobs.length > JOBS_PER_PAGE ? (
+      {!isLoading && !errorMessage && jobs.length > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-      ) : null}
+      )}
     </main>
   );
 }

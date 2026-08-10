@@ -85,7 +85,7 @@ function CreateJob() {
         Publish a new role. Required fields are validated before submission.
       </p>
 
-      {successToast ? <p className="form-success">{successToast}</p> : null}
+      {!!successToast ? <p className="form-success">{successToast}</p> : null}
 
       <JobForm
         initialValues={draftValues}

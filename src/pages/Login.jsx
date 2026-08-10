@@ -54,7 +54,7 @@ function Login() {
         errorClassName="form-error"
         submitButtonClassName="login-form__submit"
       />
-      {infoMessage ? <p className="form-success">{infoMessage}</p> : null}
+      {!!infoMessage ? <p className="form-success">{infoMessage}</p> : null}
       <p className="login-form__hint">
         For security, repeated failed attempts may lock the account for up to 24
         hours.

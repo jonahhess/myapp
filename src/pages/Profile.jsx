@@ -150,12 +150,14 @@ function Profile() {
         administrator status cannot be changed from this form.
       </p>
 
-      {submitError ? (
+      {!!submitError ? (
         <p className="form-error" role="alert">
           {submitError}
         </p>
       ) : null}
-      {successMessage ? <p className="form-success">{successMessage}</p> : null}
+      {!!successMessage ? (
+        <p className="form-success">{successMessage}</p>
+      ) : null}
 
       <form className="profile-form" onSubmit={formik.handleSubmit} noValidate>
         <ProfileAccountSection
