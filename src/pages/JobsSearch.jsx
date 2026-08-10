@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Pagination from "../components/Pagination.jsx";
+import CollectionPagination from "../components/CollectionPagination.jsx";
 import JobsSearchFilters from "../components/jobs/JobsSearchFilters.jsx";
 import JobsSearchResults from "../components/jobs/JobsSearchResults.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
@@ -80,13 +80,15 @@ function JobsSearch() {
         isSavePending={isSavePending}
       />
 
-      {!isLoading && !errorMessage && filteredJobsCount > JOBS_PER_PAGE && (
-        <Pagination
-          currentPage={safeCurrentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      )}
+      <CollectionPagination
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        totalCount={filteredJobsCount}
+        pageSize={JOBS_PER_PAGE}
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </main>
   );
 }

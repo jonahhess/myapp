@@ -3,6 +3,7 @@ export { default as Footer } from "./Footer.jsx";
 export { default as JobCard } from "./JobCard.jsx";
 export { default as SearchInput } from "./SearchInput.jsx";
 export { default as Pagination } from "./Pagination.jsx";
+export { default as CollectionPagination } from "./CollectionPagination.jsx";
 export { default as LoadingSpinner } from "./LoadingSpinner.jsx";
 export { default as JobCardSkeleton } from "./JobCardSkeleton.jsx";
 export { default as ConfirmationModal } from "./ConfirmationModal.jsx";

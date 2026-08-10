@@ -1,8 +1,8 @@
 import { Suspense, lazy } from "react";
+import CollectionPagination from "../CollectionPagination.jsx";
 import CollectionStateSwitch from "../CollectionStateSwitch.jsx";
 import EmptyState from "../EmptyState.jsx";
 import JobCardSkeletonStack from "../JobCardSkeletonStack.jsx";
-import Pagination from "../Pagination.jsx";
 import { JOBS_PER_PAGE } from "../../pages/myJobs/myJobsUtils";
 
 const LazyJobCard = lazy(() => import("../JobCard.jsx"));
@@ -67,13 +67,15 @@ function MyJobsListSection({
         </Suspense>
       </CollectionStateSwitch>
 
-      {!isLoading && !errorMessage && totalJobsCount > JOBS_PER_PAGE && (
-        <Pagination
-          currentPage={safeCurrentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
-      )}
+      <CollectionPagination
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        totalCount={totalJobsCount}
+        pageSize={JOBS_PER_PAGE}
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+      />
     </>
   );
 }

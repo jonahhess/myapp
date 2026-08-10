@@ -1,9 +1,9 @@
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
+import CollectionPagination from "../components/CollectionPagination.jsx";
 import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
 import AdminUsersTable from "../components/admin/AdminUsersTable.jsx";
 import AdminUsersToolbar from "../components/admin/AdminUsersToolbar.jsx";
 import EmptyState from "../components/EmptyState.jsx";
-import Pagination from "../components/Pagination.jsx";
 import { USERS_PER_PAGE } from "./adminDashboard/adminUsersUtils";
 import useAdminUsers from "./adminDashboard/useAdminUsers";
 
@@ -72,13 +72,14 @@ function AdminDashboard() {
         />
       </CollectionStateSwitch>
 
-      {!isLoading && filteredUsersCount > USERS_PER_PAGE && (
-        <Pagination
-          currentPage={safeCurrentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      )}
+      <CollectionPagination
+        isLoading={isLoading}
+        totalCount={filteredUsersCount}
+        pageSize={USERS_PER_PAGE}
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
 
       <ConfirmationModal
         isOpen={Boolean(pendingDeleteUser)}

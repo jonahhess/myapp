@@ -1,9 +1,9 @@
 import { Suspense, lazy, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CollectionPagination from "../components/CollectionPagination.jsx";
 import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
-import Pagination from "../components/Pagination.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import usePagedCollection from "../hooks/usePagedCollection";
 import { useJobs } from "../contexts/JobsContext.jsx";
@@ -100,13 +100,15 @@ function Home() {
         </CollectionStateSwitch>
       </section>
 
-      {!isLoading && !errorMessage && totalJobsCount > JOBS_PER_PAGE && (
-        <Pagination
-          currentPage={safeCurrentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      )}
+      <CollectionPagination
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        totalCount={totalJobsCount}
+        pageSize={JOBS_PER_PAGE}
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </main>
   );
 }
