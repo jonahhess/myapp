@@ -9,7 +9,7 @@ function JobsSearchResults({
   isLoading,
   errorMessage,
   saveError,
-  filteredJobs,
+  filteredJobsCount,
   pageJobs,
   isSavedByCurrentUser,
   onToggleSave,
@@ -23,7 +23,7 @@ function JobsSearchResults({
           {saveError}
         </p>
       ) : null}
-      {!isLoading && !errorMessage && <p>{filteredJobs.length} jobs found</p>}
+      {!isLoading && !errorMessage && <p>{filteredJobsCount} jobs found</p>}
 
       {isLoading ? (
         <>
@@ -39,14 +39,14 @@ function JobsSearchResults({
         </section>
       )}
 
-      {!isLoading && !errorMessage && filteredJobs.length === 0 && (
+      {!isLoading && !errorMessage && filteredJobsCount === 0 && (
         <EmptyState
           title="No jobs found"
           description="Try adjusting your filters or search terms."
         />
       )}
 
-      {!isLoading && !errorMessage && filteredJobs.length > 0 && (
+      {!isLoading && !errorMessage && filteredJobsCount > 0 && (
         <Suspense
           fallback={
             <>

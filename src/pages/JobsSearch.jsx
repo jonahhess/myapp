@@ -43,11 +43,9 @@ function JobsSearch() {
     () => filterJobsByCriteria(jobs, debouncedFilters),
     [debouncedFilters, jobs],
   );
+  const filteredJobsCount = filteredJobs.length;
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredJobs.length / JOBS_PER_PAGE),
-  );
+  const totalPages = Math.max(1, Math.ceil(filteredJobsCount / JOBS_PER_PAGE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const pageStart = (safeCurrentPage - 1) * JOBS_PER_PAGE;
   const pageJobs = filteredJobs.slice(pageStart, pageStart + JOBS_PER_PAGE);
@@ -70,14 +68,14 @@ function JobsSearch() {
         isLoading={isLoading}
         errorMessage={errorMessage}
         saveError={saveError}
-        filteredJobs={filteredJobs}
+        filteredJobsCount={filteredJobsCount}
         pageJobs={pageJobs}
         isSavedByCurrentUser={isSavedByCurrentUser}
         onToggleSave={handleToggleSave}
         isSavePending={isSavePending}
       />
 
-      {!isLoading && !errorMessage && filteredJobs.length > JOBS_PER_PAGE && (
+      {!isLoading && !errorMessage && filteredJobsCount > JOBS_PER_PAGE && (
         <Pagination
           currentPage={safeCurrentPage}
           totalPages={totalPages}
