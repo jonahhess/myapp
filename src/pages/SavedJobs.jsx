@@ -1,4 +1,4 @@
-import { Suspense, lazy, useMemo, useState } from "react";
+import { Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import CollectionPagination from "../components/CollectionPagination.jsx";
 import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
@@ -6,7 +6,7 @@ import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
-import usePagedCollection from "../hooks/usePagedCollection";
+import useListResourceController from "../hooks/useListResourceController";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 
 const LazyJobCard = lazy(() => import("../components/JobCard.jsx"));
@@ -21,7 +21,6 @@ function SavedJobs() {
     jobsErrorMessage: errorMessage,
     reloadJobs,
   } = useJobs();
-  const [currentPage, setCurrentPage] = useState(1);
   const currentUserId = user?.id || user?._id || "";
   const { saveError, isSavePending, isSavedByCurrentUser, handleToggleSave } =
     useSavedJobsActions({
@@ -31,19 +30,18 @@ function SavedJobs() {
       failureMessage: "Failed to update saved jobs.",
     });
 
-  const savedJobs = useMemo(
-    () => jobs.filter((job) => isSavedByCurrentUser(job)),
-    [jobs, isSavedByCurrentUser],
-  );
   const {
+    setCurrentPage,
     totalCount: savedJobsCount,
     totalPages,
     safeCurrentPage,
     pageItems: pageJobs,
-  } = usePagedCollection({
-    items: savedJobs,
-    currentPage,
+  } = useListResourceController({
+    sourceItems: jobs,
+    sourceIsLoading: isLoading,
+    sourceErrorMessage: errorMessage,
     pageSize: JOBS_PER_PAGE,
+    filterItems: (items) => items.filter((job) => isSavedByCurrentUser(job)),
   });
 
   return (

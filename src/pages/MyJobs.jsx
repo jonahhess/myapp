@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import MyJobsListSection from "../components/jobs/MyJobsListSection.jsx";
@@ -22,12 +21,9 @@ function MyJobs() {
     handleDeleteConfirm,
   } = useMyJobs();
 
-  const handleEdit = useCallback(
-    (job) => {
-      navigate(`/jobs/${job.id}/edit`);
-    },
-    [navigate],
-  );
+  const handleEdit = (job) => {
+    navigate(`/jobs/${job.id}/edit`);
+  };
 
   return (
     <main className="job-page">

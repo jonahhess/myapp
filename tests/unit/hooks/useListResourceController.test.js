@@ -185,4 +185,34 @@ describe("useListResourceController", () => {
     expect(result.current.totalCount).toBe(1);
     expect(result.current.pageItems).toEqual([{ id: 2, title: "Backend" }]);
   });
+
+  it("does not reset page when only filter function identity changes", () => {
+    const sourceItems = [1, 2, 3, 4, 5, 6];
+
+    const { result, rerender } = renderHook(
+      ({ mode }) =>
+        useListResourceController({
+          sourceItems,
+          sourceIsLoading: false,
+          pageSize: 2,
+          initialPage: 3,
+          filterValue: "same-query",
+          filterItems: (items, query) => {
+            const _ = query;
+            return mode === "all" ? items : items.slice(0, 5);
+          },
+        }),
+      {
+        initialProps: { mode: "all" },
+      },
+    );
+
+    expect(result.current.currentPage).toBe(3);
+    expect(result.current.pageItems).toEqual([5, 6]);
+
+    rerender({ mode: "all" });
+
+    expect(result.current.currentPage).toBe(3);
+    expect(result.current.pageItems).toEqual([5, 6]);
+  });
 });

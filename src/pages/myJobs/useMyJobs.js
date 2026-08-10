@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useJobs } from "../../contexts/JobsContext.jsx";
 import useListResourceController from "../../hooks/useListResourceController";
 import useAsyncMutation from "../../hooks/useAsyncMutation";
@@ -15,11 +15,6 @@ export default function useMyJobs() {
     defaultErrorMessage: "Failed to delete the job.",
   });
 
-  const mapJobItems = useCallback(
-    (payload) => readJobsPayload(payload).map(normalizeJob),
-    [],
-  );
-
   const {
     items: jobs,
     setItems: setJobs,
@@ -34,7 +29,7 @@ export default function useMyJobs() {
     pageItems: pageJobs,
   } = useListResourceController({
     fetcher: jobsService.getMyJobs,
-    mapItems: mapJobItems,
+    mapItems: (payload) => readJobsPayload(payload).map(normalizeJob),
     errorMessage: "Failed to load your jobs.",
     clearItemsOnError: true,
     pageSize: JOBS_PER_PAGE,

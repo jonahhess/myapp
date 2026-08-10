@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import useListResourceController from "../../hooks/useListResourceController";
 import useAsyncMutation from "../../hooks/useAsyncMutation";
 import usersService from "../../services/usersService";
@@ -16,32 +16,6 @@ export default function useAdminUsers() {
     defaultErrorMessage: "Failed to delete user.",
   });
 
-  const mapUserItems = useCallback(
-    (payload) => readUsersPayload(payload).map(normalizeUserRow),
-    [],
-  );
-
-  const filterUsers = useCallback((users, nextQuery) => {
-    const normalizedQuery = String(nextQuery || "")
-      .trim()
-      .toLowerCase();
-    if (!normalizedQuery) {
-      return users;
-    }
-
-    return users.filter((item) => {
-      const fullName = item.fullName.toLowerCase();
-      const email = item.email.toLowerCase();
-      const phone = String(item.phone || "").toLowerCase();
-
-      return (
-        fullName.includes(normalizedQuery) ||
-        email.includes(normalizedQuery) ||
-        phone.includes(normalizedQuery)
-      );
-    });
-  }, []);
-
   const {
     setItems: setUsers,
     isLoading,
@@ -55,12 +29,31 @@ export default function useAdminUsers() {
     pageItems: pageUsers,
   } = useListResourceController({
     fetcher: usersService.getUsers,
-    mapItems: mapUserItems,
+    mapItems: (payload) => readUsersPayload(payload).map(normalizeUserRow),
     errorMessage: "Failed to load users.",
     clearItemsOnError: false,
     pageSize: USERS_PER_PAGE,
     filterValue: query,
-    filterItems: filterUsers,
+    filterItems: (users, nextQuery) => {
+      const normalizedQuery = String(nextQuery || "")
+        .trim()
+        .toLowerCase();
+      if (!normalizedQuery) {
+        return users;
+      }
+
+      return users.filter((item) => {
+        const fullName = item.fullName.toLowerCase();
+        const email = item.email.toLowerCase();
+        const phone = String(item.phone || "").toLowerCase();
+
+        return (
+          fullName.includes(normalizedQuery) ||
+          email.includes(normalizedQuery) ||
+          phone.includes(normalizedQuery)
+        );
+      });
+    },
   });
 
   const handleQueryChange = (nextQuery) => {

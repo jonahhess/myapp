@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, use, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import JobForm from "../components/JobForm.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
@@ -8,66 +8,54 @@ import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeJob } from "../utils/normalizers";
 
-function EditJob() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const jobsContext = useJobs({ optional: true });
-  const reloadJobs = jobsContext?.reloadJobs;
-  const [job, setJob] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState("");
+const editJobResourceCache = new Map();
+
+function readEditJobResource(jobId) {
+  const key = String(jobId || "");
+
+  if (!key) {
+    return Promise.resolve({
+      job: null,
+      loadError: "Missing job identifier.",
+    });
+  }
+
+  if (!editJobResourceCache.has(key)) {
+    editJobResourceCache.set(
+      key,
+      (async () => {
+        try {
+          const payload = await jobsService.getJobById(key);
+          const normalized = normalizeJob(
+            payload?.job || payload?.data?.job || payload,
+          );
+          return { job: normalized, loadError: "" };
+        } catch (error) {
+          return {
+            job: null,
+            loadError: getUserFriendlyErrorMessage(
+              error,
+              "Failed to load job details.",
+            ),
+          };
+        }
+      })(),
+    );
+  }
+
+  return editJobResourceCache.get(key);
+}
+
+function EditJobContent({ id, user, navigate, reloadJobs }) {
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successToast, setSuccessToast] = useState("");
+  const { job, loadError } = use(readEditJobResource(id));
 
-  useEffect(() => {
-    let isMounted = true;
-
-    async function loadJob() {
-      setIsLoading(true);
-      setLoadError("");
-
-      try {
-        const payload = await jobsService.getJobById(id);
-        const normalized = normalizeJob(
-          payload?.job || payload?.data?.job || payload,
-        );
-        if (isMounted) {
-          setJob(normalized);
-        }
-      } catch (error) {
-        if (isMounted) {
-          setLoadError(
-            getUserFriendlyErrorMessage(error, "Failed to load job details."),
-          );
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    if (id) {
-      loadJob();
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
-
-  const canEditJob = useMemo(() => {
-    if (!job || !user) {
-      return false;
-    }
-
-    return (
-      Boolean(user.isAdmin) ||
-      String(job.recruiterId || "") === String(user.id || "")
-    );
-  }, [job, user]);
+  const canEditJob =
+    Boolean(job && user) &&
+    (Boolean(user.isAdmin) ||
+      String(job.recruiterId || "") === String(user.id || ""));
 
   const handleSubmit = async (payload) => {
     setSubmitError("");
@@ -91,40 +79,24 @@ function EditJob() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <main className="job-page">
-        <h1>Edit Job</h1>
-        <LoadingSpinner label="Loading job details..." />
-      </main>
-    );
-  }
-
   if (loadError) {
     return (
-      <main className="job-page">
-        <h1>Edit Job</h1>
-        <p className="form-error" role="alert">
-          {loadError}
-        </p>
-      </main>
+      <p className="form-error" role="alert">
+        {loadError}
+      </p>
     );
   }
 
   if (!canEditJob) {
     return (
-      <main className="job-page">
-        <h1>Edit Job</h1>
-        <p className="form-error" role="alert">
-          You do not have permission to edit this job.
-        </p>
-      </main>
+      <p className="form-error" role="alert">
+        You do not have permission to edit this job.
+      </p>
     );
   }
 
   return (
-    <main className="job-page">
-      <h1>Edit Job</h1>
+    <>
       <p className="job-page__intro">
         Update role details, contact information, and media.
       </p>
@@ -140,6 +112,29 @@ function EditJob() {
         submitError={submitError}
         enableReinitialize
       />
+    </>
+  );
+}
+
+function EditJob() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const jobsContext = useJobs({ optional: true });
+  const reloadJobs = jobsContext?.reloadJobs;
+
+  return (
+    <main className="job-page">
+      <h1>Edit Job</h1>
+
+      <Suspense fallback={<LoadingSpinner label="Loading job details..." />}>
+        <EditJobContent
+          id={id}
+          user={user}
+          navigate={navigate}
+          reloadJobs={reloadJobs}
+        />
+      </Suspense>
     </main>
   );
 }

@@ -1,11 +1,11 @@
 import {
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
+  use,
 } from "react";
 import jobsService from "../services/jobsService";
 import { normalizeJob } from "../utils/normalizers";
@@ -175,7 +175,7 @@ export function JobsProvider({ children }) {
 
 export function useJobs(options = {}) {
   const { optional = false } = options;
-  const context = useContext(JobsContext);
+  const context = use(JobsContext);
 
   if (!context) {
     if (optional) {

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import JobForm from "../components/JobForm.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
@@ -53,10 +53,10 @@ function CreateJob() {
   const [successToast, setSuccessToast] = useState("");
   const [draftValues, setDraftValues] = useState(() => readCreateJobDraft());
 
-  const handleDraftChange = useCallback((nextValues) => {
+  const handleDraftChange = (nextValues) => {
     setDraftValues(nextValues);
     writeCreateJobDraft(nextValues);
-  }, []);
+  };
 
   const handleSubmit = async (payload) => {
     setSubmitError("");

@@ -19,6 +19,7 @@ export default function useListResourceController({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const hasHydratedFilterRef = useRef(false);
   const hasExternalSource = Array.isArray(sourceItems);
+  const hasFilter = typeof filterItems === "function";
 
   const {
     items: asyncItems,
@@ -43,16 +44,16 @@ export default function useListResourceController({
   const reload = hasExternalSource ? async () => items : reloadAsync;
 
   const filteredItems = useMemo(() => {
-    if (typeof filterItems !== "function") {
+    if (!hasFilter) {
       return items;
     }
 
     const nextItems = filterItems(items, filterValue);
     return Array.isArray(nextItems) ? nextItems : [];
-  }, [filterItems, filterValue, items]);
+  }, [filterItems, filterValue, hasFilter, items]);
 
   useEffect(() => {
-    if (!resetPageOnFilterChange || typeof filterItems !== "function") {
+    if (!resetPageOnFilterChange || !hasFilter) {
       return;
     }
 
@@ -62,7 +63,7 @@ export default function useListResourceController({
     }
 
     setCurrentPage(1);
-  }, [filterItems, filterValue, resetPageOnFilterChange]);
+  }, [filterValue, hasFilter, resetPageOnFilterChange]);
 
   const { totalCount, totalPages, safeCurrentPage, pageStart, pageItems } =
     usePagedCollection({

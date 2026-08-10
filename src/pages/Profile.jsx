@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, use, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
@@ -15,53 +15,49 @@ import { createProfileValidationSchema } from "../validation/schemas";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeUserProfileUpdatePayload } from "../utils/requestNormalization";
 
-function Profile() {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+const profileResourceCache = new Map();
+
+function readProfileResource(userId) {
+  const key = String(userId || "");
+
+  if (!key) {
+    return Promise.resolve({
+      initialValues: PROFILE_INITIAL_VALUES,
+      loadError: "Unable to determine current user.",
+    });
+  }
+
+  if (!profileResourceCache.has(key)) {
+    profileResourceCache.set(
+      key,
+      (async () => {
+        try {
+          const payload = await usersService.getUserById(key);
+          return {
+            initialValues: mapUserToProfileValues(payload),
+            loadError: "",
+          };
+        } catch (error) {
+          return {
+            initialValues: PROFILE_INITIAL_VALUES,
+            loadError: getUserFriendlyErrorMessage(
+              error,
+              "Failed to load your profile.",
+            ),
+          };
+        }
+      })(),
+    );
+  }
+
+  return profileResourceCache.get(key);
+}
+
+function ProfileContent({ user, logout, navigate }) {
   const [isTogglingRecruiter, setIsTogglingRecruiter] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [loadError, setLoadError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [initialValues, setInitialValues] = useState(PROFILE_INITIAL_VALUES);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function loadUserProfile() {
-      if (!user?.id) {
-        setIsLoading(false);
-        setLoadError("Unable to determine current user.");
-        return;
-      }
-
-      setIsLoading(true);
-      setLoadError("");
-
-      try {
-        const payload = await usersService.getUserById(user.id);
-        if (isMounted) {
-          setInitialValues(mapUserToProfileValues(payload));
-        }
-      } catch (error) {
-        if (isMounted) {
-          setLoadError(
-            getUserFriendlyErrorMessage(error, "Failed to load your profile."),
-          );
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadUserProfile();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [user?.id]);
+  const { initialValues, loadError } = use(readProfileResource(user?.id));
 
   const formik = useFormik({
     initialValues,
@@ -122,29 +118,16 @@ function Profile() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <main className="profile-page">
-        <h1>Profile Settings</h1>
-        <LoadingSpinner label="Loading profile..." />
-      </main>
-    );
-  }
-
   if (loadError) {
     return (
-      <main className="profile-page">
-        <h1>Profile Settings</h1>
-        <p className="form-error" role="alert">
-          {loadError}
-        </p>
-      </main>
+      <p className="form-error" role="alert">
+        {loadError}
+      </p>
     );
   }
 
   return (
-    <main className="profile-page">
-      <h1>Profile Settings</h1>
+    <>
       <p className="profile-page__intro">
         Keep your profile information accurate. Email, password, and
         administrator status cannot be changed from this form.
@@ -180,6 +163,21 @@ function Profile() {
           {formik.isSubmitting ? "Saving..." : "Save Changes"}
         </button>
       </form>
+    </>
+  );
+}
+
+function Profile() {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  return (
+    <main className="profile-page">
+      <h1>Profile Settings</h1>
+
+      <Suspense fallback={<LoadingSpinner label="Loading profile..." />}>
+        <ProfileContent user={user} logout={logout} navigate={navigate} />
+      </Suspense>
     </main>
   );
 }

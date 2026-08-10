@@ -1,10 +1,10 @@
 import {
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
+  use,
 } from "react";
 import usersService from "../services/usersService";
 import { decodeJwt, isJwtExpired } from "../utils/jwt";
@@ -102,7 +102,7 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const context = use(AuthContext);
 
   if (!context) {
     throw new Error("useAuth must be used within AuthProvider");

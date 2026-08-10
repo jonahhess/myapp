@@ -1,9 +1,9 @@
 import {
   createContext,
   useCallback,
-  useContext,
   useMemo,
   useState,
+  use,
 } from "react";
 
 const SearchContext = createContext(null);
@@ -73,7 +73,7 @@ export function SearchProvider({ children }) {
 }
 
 export function useSearchUi() {
-  const context = useContext(SearchContext);
+  const context = use(SearchContext);
 
   if (!context) {
     throw new Error("useSearchUi must be used within SearchProvider");

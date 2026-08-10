@@ -9,9 +9,18 @@ export default function useAsyncListResource({
   enabled = true,
 }) {
   const isMountedRef = useRef(true);
+  const fetcherRef = useRef(fetcher);
+  const mapItemsRef = useRef(mapItems);
+  const errorMessageRef = useRef(errorMessage);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(enabled);
   const [loadError, setLoadError] = useState("");
+
+  useEffect(() => {
+    fetcherRef.current = fetcher;
+    mapItemsRef.current = mapItems;
+    errorMessageRef.current = errorMessage;
+  }, [errorMessage, fetcher, mapItems]);
 
   const reload = useCallback(async () => {
     if (!enabled) {
@@ -24,8 +33,8 @@ export default function useAsyncListResource({
     }
 
     try {
-      const payload = await fetcher();
-      const nextItems = mapItems(payload);
+      const payload = await fetcherRef.current();
+      const nextItems = mapItemsRef.current(payload);
       if (isMountedRef.current) {
         setItems(nextItems);
       }
@@ -36,7 +45,9 @@ export default function useAsyncListResource({
       }
 
       if (isMountedRef.current) {
-        setLoadError(getUserFriendlyErrorMessage(error, errorMessage));
+        setLoadError(
+          getUserFriendlyErrorMessage(error, errorMessageRef.current),
+        );
       }
       throw error;
     } finally {
@@ -44,7 +55,7 @@ export default function useAsyncListResource({
         setIsLoading(false);
       }
     }
-  }, [clearItemsOnError, enabled, errorMessage, fetcher, mapItems]);
+  }, [clearItemsOnError, enabled]);
 
   useEffect(() => {
     isMountedRef.current = true;

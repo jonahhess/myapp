@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import CollectionPagination from "../components/CollectionPagination.jsx";
 import JobsSearchFilters from "../components/jobs/JobsSearchFilters.jsx";
@@ -34,10 +33,6 @@ function JobsSearch() {
       failureMessage: "Failed to update saved status.",
     });
   const debouncedFilters = useDebounce(filters, 300);
-  const filterJobs = useCallback(
-    (items, nextFilters) => filterJobsByCriteria(items, nextFilters),
-    [],
-  );
 
   const {
     setCurrentPage,
@@ -51,7 +46,8 @@ function JobsSearch() {
     sourceErrorMessage: errorMessage,
     pageSize: JOBS_PER_PAGE,
     filterValue: debouncedFilters,
-    filterItems: filterJobs,
+    filterItems: (items, nextFilters) =>
+      filterJobsByCriteria(items, nextFilters),
   });
 
   return (
