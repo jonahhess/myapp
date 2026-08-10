@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
-import MyJobsListSection from "../components/jobs/MyJobsListSection.jsx";
-import useMyJobs from "./myJobs/useMyJobs";
+import MyJobsListSection from "../components/MyJobsListSection.jsx";
+import useMyJobs from "../hooks/useMyJobs.js";
 
 function MyJobs() {
   const navigate = useNavigate();

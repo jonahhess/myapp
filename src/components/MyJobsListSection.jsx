@@ -1,11 +1,11 @@
 import { Suspense, lazy } from "react";
-import CollectionPagination from "../CollectionPagination.jsx";
-import CollectionStateSwitch from "../CollectionStateSwitch.jsx";
-import EmptyState from "../EmptyState.jsx";
-import JobCardSkeletonStack from "../JobCardSkeletonStack.jsx";
-import { JOBS_PER_PAGE } from "../../pages/myJobs/myJobsUtils";
+import CollectionPagination from "./CollectionPagination.jsx";
+import CollectionStateSwitch from "./CollectionStateSwitch.jsx";
+import EmptyState from "./EmptyState.jsx";
+import JobCardSkeletonStack from "./JobCardSkeletonStack.jsx";
+import { JOBS_PER_PAGE } from "../utils/myJobsUtils.js";
 
-const LazyJobCard = lazy(() => import("../JobCard.jsx"));
+const LazyJobCard = lazy(() => import("./JobCard.jsx"));
 
 function MyJobsListSection({
   pageJobs,

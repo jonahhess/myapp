@@ -1,4 +1,4 @@
-import { formatDate } from "../../pages/adminDashboard/adminUsersUtils";
+import { formatDate } from "../utils/adminUsersUtils.js";
 
 function AdminUsersTable({ pageUsers, isDeletingUser, onDeleteRequest }) {
   return (

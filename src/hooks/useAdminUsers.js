@@ -1,12 +1,12 @@
 import { useState } from "react";
-import useListResourceController from "../../hooks/useListResourceController";
-import useAsyncMutation from "../../hooks/useAsyncMutation";
-import usersService from "../../services/usersService";
+import useListResourceController from "./useListResourceController";
+import useAsyncMutation from "./useAsyncMutation";
+import usersService from "../services/usersService";
 import {
   normalizeUserRow,
   readUsersPayload,
   USERS_PER_PAGE,
-} from "./adminUsersUtils";
+} from "../utils/adminUsersUtils";
 
 export default function useAdminUsers() {
   const [query, setQuery] = useState("");

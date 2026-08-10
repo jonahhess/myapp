@@ -1,11 +1,11 @@
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import CollectionPagination from "../components/CollectionPagination.jsx";
 import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
-import AdminUsersTable from "../components/admin/AdminUsersTable.jsx";
-import AdminUsersToolbar from "../components/admin/AdminUsersToolbar.jsx";
+import AdminUsersTable from "../components/AdminUsersTable.jsx";
+import AdminUsersToolbar from "../components/AdminUsersToolbar.jsx";
 import EmptyState from "../components/EmptyState.jsx";
-import { USERS_PER_PAGE } from "./adminDashboard/adminUsersUtils";
-import useAdminUsers from "./adminDashboard/useAdminUsers";
+import { USERS_PER_PAGE } from "../utils/adminUsersUtils.js";
+import useAdminUsers from "../hooks/useAdminUsers.js";
 
 function AdminDashboard() {
   const {
@@ -35,14 +35,12 @@ function AdminDashboard() {
 
       <AdminUsersToolbar query={query} onQueryChange={handleQueryChange} />
 
-      {!!errorMessage ? (
+      {errorMessage ? (
         <p className="form-error" role="alert">
           {errorMessage}
         </p>
       ) : null}
-      {!!successMessage ? (
-        <p className="form-success">{successMessage}</p>
-      ) : null}
+      {successMessage ? <p className="form-success">{successMessage}</p> : null}
 
       <CollectionStateSwitch
         isLoading={isLoading}

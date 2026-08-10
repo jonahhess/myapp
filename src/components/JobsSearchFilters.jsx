@@ -1,4 +1,4 @@
-import SearchInput from "../SearchInput.jsx";
+import SearchInput from "./SearchInput.jsx";
 
 const TEXT_FILTER_FIELDS = [
   {

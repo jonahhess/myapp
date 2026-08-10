@@ -1,4 +1,4 @@
-import { EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "../../validation/schemas";
+import { EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "../validation/schemas.js";
 
 function extractDigits(value = "") {
   return String(value).replace(/\D/g, "");

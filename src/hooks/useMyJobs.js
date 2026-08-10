@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useJobs } from "../../contexts/JobsContext.jsx";
-import useListResourceController from "../../hooks/useListResourceController";
-import useAsyncMutation from "../../hooks/useAsyncMutation";
-import jobsService from "../../services/jobsService";
-import { normalizeJob } from "../../utils/normalizers";
+import { useJobs } from "../contexts/JobsContext.jsx";
+import useListResourceController from "./useListResourceController.js";
+import useAsyncMutation from "./useAsyncMutation.js";
+import jobsService from "../services/jobsService.js";
+import { normalizeJob } from "../utils/normalizers.js";
 import {
   clearMyJobsCache,
   readMyJobsCache,
   writeMyJobsCache,
-} from "./myJobsCache";
-import { JOBS_PER_PAGE, readJobsPayload } from "./myJobsUtils";
+} from "../contexts/myJobsCache.js";
+import { JOBS_PER_PAGE, readJobsPayload } from "../utils/myJobsUtils.js";
 
 export default function useMyJobs() {
   const jobsContext = useJobs({ optional: true });

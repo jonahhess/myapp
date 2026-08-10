@@ -9,7 +9,7 @@ import {
   ROLE_TEXT_FIELDS,
 } from "../config/forms/jobFormConfig";
 import { createJobValidationSchema } from "../validation/schemas";
-import { toJobApiPayload, toJobFormValues } from "../utils/forms/jobFormValues";
+import { toJobApiPayload, toJobFormValues } from "../utils/jobFormValues.js";
 
 function JobForm({
   initialValues,

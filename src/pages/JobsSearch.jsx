@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import CollectionPagination from "../components/CollectionPagination.jsx";
-import JobsSearchFilters from "../components/jobs/JobsSearchFilters.jsx";
-import JobsSearchResults from "../components/jobs/JobsSearchResults.jsx";
+import JobsSearchFilters from "../components/JobsSearchFilters.jsx";
+import JobsSearchResults from "../components/JobsSearchResults.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
 import { useSearchUi } from "../contexts/SearchContext.jsx";
 import useDebounce from "../hooks/useDebounce";
 import useListResourceController from "../hooks/useListResourceController";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
-import { filterJobsByCriteria } from "./jobsSearch/filterJobs";
+import { filterJobsByCriteria } from "../utils/filterJobs.js";
 
 const JOBS_PER_PAGE = 6;
 

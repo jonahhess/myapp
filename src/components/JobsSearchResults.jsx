@@ -1,9 +1,9 @@
 import { Suspense, lazy } from "react";
-import CollectionStateSwitch from "../CollectionStateSwitch.jsx";
-import EmptyState from "../EmptyState.jsx";
-import JobCardSkeletonStack from "../JobCardSkeletonStack.jsx";
+import CollectionStateSwitch from "./CollectionStateSwitch.jsx";
+import EmptyState from "./EmptyState.jsx";
+import JobCardSkeletonStack from "./JobCardSkeletonStack.jsx";
 
-const LazyJobCard = lazy(() => import("../JobCard.jsx"));
+const LazyJobCard = lazy(() => import("./JobCard.jsx"));
 
 function JobsSearchResults({
   isLoading,

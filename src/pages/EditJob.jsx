@@ -8,7 +8,7 @@ import {
   editJobResourceCache,
   resetJobResourceCache,
 } from "./jobResourceCache";
-import { clearMyJobsCache } from "./myJobs/myJobsCache";
+import { clearMyJobsCache } from "../contexts/myJobsCache.js";
 import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeJob } from "../utils/normalizers";
