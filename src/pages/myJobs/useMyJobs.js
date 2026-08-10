@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { useJobs } from "../../contexts/JobsContext.jsx";
 import useAsyncListResource from "../../hooks/useAsyncListResource";
+import useAsyncMutation from "../../hooks/useAsyncMutation";
 import usePagedCollection from "../../hooks/usePagedCollection";
 import jobsService from "../../services/jobsService";
-import { getUserFriendlyErrorMessage } from "../../utils/errors";
 import { normalizeJob } from "../../utils/normalizers";
 import { JOBS_PER_PAGE, readJobsPayload } from "./myJobsUtils";
 
@@ -13,7 +13,9 @@ export default function useMyJobs() {
   const [currentPage, setCurrentPage] = useState(1);
   const [jobPendingDelete, setJobPendingDelete] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
-  const [isDeletingJob, setIsDeletingJob] = useState(false);
+  const { isPending: isDeletingJob, run: runDeleteJob } = useAsyncMutation({
+    defaultErrorMessage: "Failed to delete the job.",
+  });
 
   const mapJobItems = useCallback(
     (payload) => readJobsPayload(payload).map(normalizeJob),
@@ -61,23 +63,27 @@ export default function useMyJobs() {
       return;
     }
 
-    setIsDeletingJob(true);
+    const targetJob = jobPendingDelete;
 
     try {
-      await jobsService.deleteJob(jobPendingDelete.id);
-      setJobs((prevJobs) =>
-        prevJobs.filter((job) => job.id !== jobPendingDelete.id),
-      );
-      await reloadJobs?.({ background: true });
-      setToastMessage(`Deleted "${jobPendingDelete.title}" successfully.`);
-      setErrorMessage("");
-    } catch (error) {
-      setErrorMessage(
-        getUserFriendlyErrorMessage(error, "Failed to delete the job."),
-      );
-    } finally {
-      setIsDeletingJob(false);
-      setJobPendingDelete(null);
+      await runDeleteJob(() => jobsService.deleteJob(targetJob.id), {
+        onSuccess: async () => {
+          setJobs((prevJobs) =>
+            prevJobs.filter((job) => job.id !== targetJob.id),
+          );
+          await reloadJobs?.({ background: true });
+          setToastMessage(`Deleted "${targetJob.title}" successfully.`);
+          setErrorMessage("");
+        },
+        onError: (_, message) => {
+          setErrorMessage(message);
+        },
+        onFinally: () => {
+          setJobPendingDelete(null);
+        },
+      });
+    } catch {
+      // Error state is handled in onError.
     }
   };
 

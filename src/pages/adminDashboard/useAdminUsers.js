@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import useAsyncListResource from "../../hooks/useAsyncListResource";
+import useAsyncMutation from "../../hooks/useAsyncMutation";
 import usePagedCollection from "../../hooks/usePagedCollection";
 import usersService from "../../services/usersService";
-import { getUserFriendlyErrorMessage } from "../../utils/errors";
 import {
   normalizeUserRow,
   readUsersPayload,
@@ -12,9 +12,11 @@ import {
 export default function useAdminUsers() {
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDeletingUser, setIsDeletingUser] = useState(false);
   const [pendingDeleteUser, setPendingDeleteUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const { isPending: isDeletingUser, run: runDeleteUser } = useAsyncMutation({
+    defaultErrorMessage: "Failed to delete user.",
+  });
 
   const mapUserItems = useCallback(
     (payload) => readUsersPayload(payload).map(normalizeUserRow),
@@ -89,22 +91,24 @@ export default function useAdminUsers() {
       return;
     }
 
-    setIsDeletingUser(true);
     setErrorMessage("");
+    const targetUser = pendingDeleteUser;
 
     try {
-      await usersService.deleteUserById(pendingDeleteUser.id);
-      setUsers((prevUsers) =>
-        prevUsers.filter((entry) => entry.id !== pendingDeleteUser.id),
-      );
-      setSuccessMessage(`Deleted ${pendingDeleteUser.fullName} successfully.`);
-      setPendingDeleteUser(null);
-    } catch (error) {
-      setErrorMessage(
-        getUserFriendlyErrorMessage(error, "Failed to delete user."),
-      );
-    } finally {
-      setIsDeletingUser(false);
+      await runDeleteUser(() => usersService.deleteUserById(targetUser.id), {
+        onSuccess: () => {
+          setUsers((prevUsers) =>
+            prevUsers.filter((entry) => entry.id !== targetUser.id),
+          );
+          setSuccessMessage(`Deleted ${targetUser.fullName} successfully.`);
+          setPendingDeleteUser(null);
+        },
+        onError: (_, message) => {
+          setErrorMessage(message);
+        },
+      });
+    } catch {
+      // Error state is handled in onError.
     }
   };
 
