@@ -7,7 +7,7 @@ import { useJobs } from "../contexts/JobsContext.jsx";
 import {
   editJobResourceCache,
   resetJobResourceCache,
-} from "./jobResourceCache";
+} from "../contexts/jobResourceCache.js";
 import { clearMyJobsCache } from "../contexts/myJobsCache.js";
 import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
