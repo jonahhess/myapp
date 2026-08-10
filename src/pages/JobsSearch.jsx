@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import CollectionPagination from "../components/CollectionPagination.jsx";
 import JobsSearchFilters from "../components/jobs/JobsSearchFilters.jsx";
@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 import { useJobs } from "../contexts/JobsContext.jsx";
 import { useSearchUi } from "../contexts/SearchContext.jsx";
 import useDebounce from "../hooks/useDebounce";
-import usePagedCollection from "../hooks/usePagedCollection";
+import useListResourceController from "../hooks/useListResourceController";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 import { filterJobsByCriteria } from "./jobsSearch/filterJobs";
 
@@ -23,7 +23,6 @@ function JobsSearch() {
     jobsErrorMessage: errorMessage,
     reloadJobs,
   } = useJobs();
-  const [currentPage, setCurrentPage] = useState(1);
   const currentUserId = user?.id || user?._id || "";
   const { saveError, isSavePending, isSavedByCurrentUser, handleToggleSave } =
     useSavedJobsActions({
@@ -35,24 +34,24 @@ function JobsSearch() {
       failureMessage: "Failed to update saved status.",
     });
   const debouncedFilters = useDebounce(filters, 300);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedFilters]);
-
-  const filteredJobs = useMemo(
-    () => filterJobsByCriteria(jobs, debouncedFilters),
-    [debouncedFilters, jobs],
+  const filterJobs = useCallback(
+    (items, nextFilters) => filterJobsByCriteria(items, nextFilters),
+    [],
   );
+
   const {
+    setCurrentPage,
     totalCount: filteredJobsCount,
     totalPages,
     safeCurrentPage,
     pageItems: pageJobs,
-  } = usePagedCollection({
-    items: filteredJobs,
-    currentPage,
+  } = useListResourceController({
+    sourceItems: jobs,
+    sourceIsLoading: isLoading,
+    sourceErrorMessage: errorMessage,
     pageSize: JOBS_PER_PAGE,
+    filterValue: debouncedFilters,
+    filterItems: filterJobs,
   });
 
   return (

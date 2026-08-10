@@ -1,7 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
-import useAsyncListResource from "../../hooks/useAsyncListResource";
+import { useCallback, useState } from "react";
+import useListResourceController from "../../hooks/useListResourceController";
 import useAsyncMutation from "../../hooks/useAsyncMutation";
-import usePagedCollection from "../../hooks/usePagedCollection";
 import usersService from "../../services/usersService";
 import {
   normalizeUserRow,
@@ -11,7 +10,6 @@ import {
 
 export default function useAdminUsers() {
   const [query, setQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [pendingDeleteUser, setPendingDeleteUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const { isPending: isDeletingUser, run: runDeleteUser } = useAsyncMutation({
@@ -23,21 +21,10 @@ export default function useAdminUsers() {
     [],
   );
 
-  const {
-    items: users,
-    setItems: setUsers,
-    isLoading,
-    errorMessage,
-    setErrorMessage,
-  } = useAsyncListResource({
-    fetcher: usersService.getUsers,
-    mapItems: mapUserItems,
-    errorMessage: "Failed to load users.",
-    clearItemsOnError: false,
-  });
-
-  const filteredUsers = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+  const filterUsers = useCallback((users, nextQuery) => {
+    const normalizedQuery = String(nextQuery || "")
+      .trim()
+      .toLowerCase();
     if (!normalizedQuery) {
       return users;
     }
@@ -53,21 +40,31 @@ export default function useAdminUsers() {
         phone.includes(normalizedQuery)
       );
     });
-  }, [query, users]);
+  }, []);
+
   const {
+    setItems: setUsers,
+    isLoading,
+    errorMessage,
+    setErrorMessage,
+    currentPage,
+    setCurrentPage,
     totalCount: filteredUsersCount,
     totalPages,
     safeCurrentPage,
     pageItems: pageUsers,
-  } = usePagedCollection({
-    items: filteredUsers,
-    currentPage,
+  } = useListResourceController({
+    fetcher: usersService.getUsers,
+    mapItems: mapUserItems,
+    errorMessage: "Failed to load users.",
+    clearItemsOnError: false,
     pageSize: USERS_PER_PAGE,
+    filterValue: query,
+    filterItems: filterUsers,
   });
 
   const handleQueryChange = (nextQuery) => {
     setQuery(nextQuery);
-    setCurrentPage(1);
   };
 
   const handleDeleteRequest = (targetUser) => {

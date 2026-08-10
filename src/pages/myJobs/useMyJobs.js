@@ -1,8 +1,7 @@
 import { useCallback, useState } from "react";
 import { useJobs } from "../../contexts/JobsContext.jsx";
-import useAsyncListResource from "../../hooks/useAsyncListResource";
+import useListResourceController from "../../hooks/useListResourceController";
 import useAsyncMutation from "../../hooks/useAsyncMutation";
-import usePagedCollection from "../../hooks/usePagedCollection";
 import jobsService from "../../services/jobsService";
 import { normalizeJob } from "../../utils/normalizers";
 import { JOBS_PER_PAGE, readJobsPayload } from "./myJobsUtils";
@@ -10,7 +9,6 @@ import { JOBS_PER_PAGE, readJobsPayload } from "./myJobsUtils";
 export default function useMyJobs() {
   const jobsContext = useJobs({ optional: true });
   const reloadJobs = jobsContext?.reloadJobs;
-  const [currentPage, setCurrentPage] = useState(1);
   const [jobPendingDelete, setJobPendingDelete] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
   const { isPending: isDeletingJob, run: runDeleteJob } = useAsyncMutation({
@@ -28,21 +26,17 @@ export default function useMyJobs() {
     isLoading,
     errorMessage,
     setErrorMessage,
-  } = useAsyncListResource({
-    fetcher: jobsService.getMyJobs,
-    mapItems: mapJobItems,
-    errorMessage: "Failed to load your jobs.",
-    clearItemsOnError: true,
-  });
-
-  const {
+    currentPage,
+    setCurrentPage,
     totalCount: totalJobsCount,
     totalPages,
     safeCurrentPage,
     pageItems: pageJobs,
-  } = usePagedCollection({
-    items: jobs,
-    currentPage,
+  } = useListResourceController({
+    fetcher: jobsService.getMyJobs,
+    mapItems: mapJobItems,
+    errorMessage: "Failed to load your jobs.",
+    clearItemsOnError: true,
     pageSize: JOBS_PER_PAGE,
   });
 
