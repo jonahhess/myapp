@@ -378,11 +378,7 @@ code {
 }
 
 .register-page,
-.login-page {
-  padding: 24px;
-  text-align: left;
-}
-
+.login-page,
 .job-page {
   padding: 24px;
   text-align: left;
@@ -592,34 +588,16 @@ code {
 }
 
 .register-form,
-.login-form {
-  display: grid;
-  gap: 14px;
-}
-
-.job-form {
-  display: grid;
-  gap: 14px;
-}
-
+.login-form,
+.job-form,
 .profile-form {
   display: grid;
   gap: 14px;
 }
 
 .register-form__group,
-.login-form__group {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-}
-
-.job-form__group {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-}
-
+.login-form__group,
+.job-form__group,
 .profile-form__group {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -627,18 +605,8 @@ code {
 }
 
 .register-form__group legend,
-.login-form__group legend {
-  color: var(--text-h);
-  font-weight: 600;
-  padding: 0 6px;
-}
-
-.job-form__group legend {
-  color: var(--text-h);
-  font-weight: 600;
-  padding: 0 6px;
-}
-
+.login-form__group legend,
+.job-form__group legend,
 .profile-form__group legend {
   color: var(--text-h);
   font-weight: 600;
@@ -646,18 +614,8 @@ code {
 }
 
 .register-form__grid,
-.login-form__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.job-form__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
+.login-form__grid,
+.job-form__grid,
 .profile-form__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -665,22 +623,8 @@ code {
 }
 
 .register-form label,
-.login-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 14px;
-  color: var(--text-h);
-}
-
-.job-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 14px;
-  color: var(--text-h);
-}
-
+.login-form label,
+.job-form label,
 .profile-form label {
   display: flex;
   flex-direction: column;
@@ -690,7 +634,8 @@ code {
 }
 
 .register-form input,
-.login-form input {
+.login-form input,
+.profile-form input {
   width: 100%;
   min-height: 40px;
   box-sizing: border-box;
@@ -726,36 +671,16 @@ code {
   resize: vertical;
 }
 
-.profile-form input {
-  width: 100%;
-  min-height: 40px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-h);
-  padding: 8px 10px;
-  font: inherit;
-}
-
 .profile-form__readonly {
   opacity: 0.85;
 }
 
 .register-form input:focus-visible,
-.login-form input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
+.login-form input:focus-visible,
+.profile-form input:focus-visible,
 .job-form input:focus-visible,
 .job-form select:focus-visible,
 .job-form textarea:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.profile-form input:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -781,10 +706,7 @@ code {
   margin: 0;
 }
 
-.register-form__hint {
-  margin-top: 6px;
-}
-
+.register-form__hint,
 .login-form__hint {
   margin-top: 6px;
 }
@@ -800,7 +722,10 @@ code {
 }
 
 .register-form__submit,
-.login-form__submit {
+.login-form__submit,
+.job-form__submit,
+.profile-form__submit,
+.profile-form__toggle {
   min-height: 42px;
   border-radius: 10px;
   border: 1px solid var(--accent-border);
@@ -820,32 +745,9 @@ code {
 .job-card__actions button:disabled,
 .modal__button:disabled,
 .empty-state__action:disabled,
-.job-page__cta:disabled {
+.job-page__cta:disabled,
+.jobs-search-actions button:disabled {
   opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.job-form__submit {
-  min-height: 42px;
-  border-radius: 10px;
-  border: 1px solid var(--accent-border);
-  background: var(--accent-bg);
-  color: var(--text-h);
-  font: inherit;
-  padding: 10px 14px;
-  cursor: pointer;
-}
-
-.profile-form__submit,
-.profile-form__toggle {
-  min-height: 42px;
-  border-radius: 10px;
-  border: 1px solid var(--accent-border);
-  background: var(--accent-bg);
-  color: var(--text-h);
-  font: inherit;
-  padding: 10px 14px;
-  cursor: pointer;
 }
 
 .jobs-search-page__intro {
@@ -914,8 +816,18 @@ code {
   cursor: pointer;
 }
 
-.jobs-search-actions button:disabled {
-  opacity: 0.6;
+.register-form__submit:disabled,
+.login-form__submit:disabled,
+.job-form__submit:disabled,
+.profile-form__submit:disabled,
+.profile-form__toggle:disabled,
+.job-card__save:disabled,
+.job-card__actions button:disabled,
+.modal__button:disabled,
+.empty-state__action:disabled,
+.job-page__cta:disabled,
+.jobs-search-actions button:disabled,
+.pagination__button:disabled {
   cursor: not-allowed;
 }
 
@@ -1050,7 +962,6 @@ code {
 
 .pagination__button:disabled {
   opacity: 0.55;
-  cursor: not-allowed;
 }
 
 .pagination__button--page {
@@ -1238,22 +1149,11 @@ code {
 }
 
 @media (max-width: 640px) {
-  .home-page {
-    padding: 16px;
-  }
-
-  .jobs-search-page {
-    padding: 16px;
-  }
-
-  .register-page {
-    padding: 16px;
-  }
-
-  .job-page {
-    padding: 16px;
-  }
-
+  .home-page,
+  .jobs-search-page,
+  .register-page,
+  .job-page,
+  .login-page,
   .profile-page,
   .admin-page,
   .not-found-page {
@@ -1265,30 +1165,14 @@ code {
     align-items: stretch;
   }
 
-  .login-page {
-    padding: 16px;
-  }
-
   .jobs-search-filters {
     padding: 14px;
   }
 
-  .register-form__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .login-form__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .job-form__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-form__grid {
-    grid-template-columns: 1fr;
-  }
-
+  .register-form__grid,
+  .login-form__grid,
+  .job-form__grid,
+  .profile-form__grid,
   .jobs-search-grid {
     grid-template-columns: 1fr;
   }
