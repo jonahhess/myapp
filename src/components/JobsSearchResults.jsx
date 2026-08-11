@@ -18,11 +18,11 @@ function JobsSearchResults({
   return (
     <section aria-label="Search results">
       <h2>Results</h2>
-      {!!saveError ? (
+      {!!saveError && (
         <p className="form-error" role="alert">
           {saveError}
         </p>
-      ) : null}
+      )}
       {!isLoading && !errorMessage && <p>{filteredJobsCount} jobs found</p>}
 
       <CollectionStateSwitch

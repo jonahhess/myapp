@@ -93,7 +93,7 @@ function JobForm({
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {hasDescriptionError ? (
+          {hasDescriptionError && (
             <span
               id="job-description-error"
               className="form-error"
@@ -101,7 +101,7 @@ function JobForm({
             >
               {formik.errors.description}
             </span>
-          ) : null}
+          )}
         </label>
       </fieldset>
 
@@ -144,11 +144,11 @@ function JobForm({
         </div>
       </fieldset>
 
-      {submitError ? (
+      {!!submitError && (
         <p className="form-error" role="alert">
           {submitError}
         </p>
-      ) : null}
+      )}
 
       <button
         className="submit"

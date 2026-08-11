@@ -70,11 +70,11 @@ function Login({
         </div>
       </fieldset>
 
-      {submitError ? (
+      {!!submitError && (
         <p className={errorClassName} role="alert">
           {submitError}
         </p>
-      ) : null}
+      )}
 
       <button
         className={submitButtonClassName}

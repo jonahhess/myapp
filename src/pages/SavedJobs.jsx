@@ -51,11 +51,11 @@ function SavedJobs() {
         Jobs you bookmarked for later review and applications.
       </p>
 
-      {!!saveError ? (
+      {!!saveError && (
         <p className="form-error" role="alert">
           {saveError}
         </p>
-      ) : null}
+      )}
 
       <CollectionStateSwitch
         isLoading={isLoading}

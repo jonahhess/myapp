@@ -37,11 +37,11 @@ function FormSelect({
           </option>
         ))}
       </select>
-      {showError ? (
+      {showError && (
         <span id={errorId} className={errorClassName} role="alert">
           {formik.errors[name]}
         </span>
-      ) : null}
+      )}
     </label>
   );
 }

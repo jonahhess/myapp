@@ -54,11 +54,11 @@ function Home() {
 
       <section aria-label="Job listings">
         <h2>All Job Listings</h2>
-        {!!saveError ? (
+        {!!saveError && (
           <p className="form-error" role="alert">
             {saveError}
           </p>
-        ) : null}
+        )}
         {!isLoading && !errorMessage && (
           <p>
             Showing {pageJobs.length} jobs on this page, {totalJobsCount} total.

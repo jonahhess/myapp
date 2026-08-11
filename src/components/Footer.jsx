@@ -61,7 +61,7 @@ function Footer({
           </ul>
         </section>
 
-        {recruiterLinks.length > 0 ? (
+        {recruiterLinks.length > 0 && (
           <section className="section" aria-label="Recruiter shortcuts">
             <h2 className="title">Recruiter</h2>
             <ul className="list">
@@ -74,7 +74,7 @@ function Footer({
               ))}
             </ul>
           </section>
-        ) : null}
+        )}
 
         <section className="section" aria-label="Platform information">
           <h2 className="title">Platform</h2>

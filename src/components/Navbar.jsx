@@ -55,7 +55,7 @@ function Navbar({
           ))}
         </ul>
 
-        {authItem ? (
+        {!!authItem && (
           <div className="auth">
             {authItem.type === "route" ? (
               <NavLink
@@ -76,7 +76,7 @@ function Navbar({
               </button>
             )}
           </div>
-        ) : null}
+        )}
       </div>
     </nav>
   );

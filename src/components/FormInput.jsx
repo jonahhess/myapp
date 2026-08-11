@@ -36,11 +36,11 @@ function FormInput({
         onBlur={formik.handleBlur}
         value={formik.values?.[name] ?? ""}
       />
-      {showError ? (
+      {!!showError && (
         <span id={errorId} className={errorClassName} role="alert">
           {formik.errors[name]}
         </span>
-      ) : null}
+      )}
     </label>
   );
 }

@@ -77,15 +77,15 @@ function JobCard({
           <h3 className="title">{job.title}</h3>
           <p className="company">{job.company}</p>
           <p className="location">{job.location}</p>
-          {!!detailsMeta ? <p className="meta">{detailsMeta}</p> : null}
+          {!!detailsMeta && <p className="meta">{detailsMeta}</p>}
         </div>
       </div>
 
-      {!!salaryText ? <p className="salary">{salaryText}</p> : null}
+      {!!salaryText && <p className="salary">{salaryText}</p>}
 
-      {!!publicationDate ? (
+      {!!publicationDate && (
         <p className="date">Published: {publicationDate}</p>
-      ) : null}
+      )}
 
       <button
         type="button"
@@ -98,26 +98,26 @@ function JobCard({
         {isSavePending ? "..." : resolvedSavedState ? "★" : "☆"}
       </button>
 
-      {!!job.description ? (
+      {!!job.description && (
         <p className="description">{job.description}</p>
-      ) : null}
+      )}
 
-      {!!job.applyLink ? (
+      {!!job.applyLink && (
         <p className="apply">
           <a href={job.applyLink} target="_blank" rel="noreferrer">
             Apply now
           </a>
         </p>
-      ) : null}
+      )}
 
       {(canEdit || canDelete) && (
         <div className="actions">
-          {canEdit ? (
+          {canEdit && (
             <button type="button" onClick={() => onEdit?.(job)}>
               Edit
             </button>
-          ) : null}
-          {canDelete ? (
+          )}
+          {canDelete && (
             <button
               type="button"
               onClick={() => onDelete?.(job)}
@@ -128,7 +128,7 @@ function JobCard({
             >
               {isDeletePending ? "Deleting..." : "🗑 Delete"}
             </button>
-          ) : null}
+          )}
         </div>
       )}
     </article>

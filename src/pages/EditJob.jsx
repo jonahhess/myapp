@@ -106,7 +106,7 @@ function EditJobContent({ id, user, navigate, reloadJobs }) {
         Update role details, contact information, and media.
       </p>
 
-      {!!successToast ? <p className="form-success">{successToast}</p> : null}
+      {!!successToast && <p className="form-success">{successToast}</p>}
 
       <JobForm
         initialValues={job}

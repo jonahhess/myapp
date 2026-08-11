@@ -86,14 +86,14 @@ function Register() {
           </p>
         </fieldset>
 
-        {!!submitError ? (
+        {!!submitError && (
           <p className="form-error" role="alert">
             {submitError}
           </p>
-        ) : null}
-        {!!submitSuccess ? (
+        )}
+        {!!submitSuccess && (
           <p className="form-success">{submitSuccess}</p>
-        ) : null}
+        )}
 
         <button
           className="submit"

@@ -35,12 +35,12 @@ function AdminDashboard() {
 
       <AdminUsersToolbar query={query} onQueryChange={handleQueryChange} />
 
-      {errorMessage ? (
+      {!!errorMessage && (
         <p className="form-error" role="alert">
           {errorMessage}
         </p>
-      ) : null}
-      {successMessage ? <p className="form-success">{successMessage}</p> : null}
+      )}
+      {!!successMessage && <p className="form-success">{successMessage}</p>}
 
       <CollectionStateSwitch
         isLoading={isLoading}
