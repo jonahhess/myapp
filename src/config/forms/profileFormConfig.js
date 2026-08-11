@@ -6,12 +6,12 @@ export const PROFILE_INITIAL_VALUES = {
   email: "",
   imageUrl: "",
   imageAlt: "",
+  state: "",
   country: "",
   city: "",
   street: "",
   houseNumber: "",
-  district: "",
-  postalCode: "",
+  zip: "",
   isAdmin: false,
   isRecruiter: false,
 };
@@ -36,28 +36,28 @@ export const PROFILE_EDITABLE_GROUPS = [
   {
     legend: "Address",
     fields: [
+      { name: "state", label: "State" },
       { name: "country", label: "Country" },
       { name: "city", label: "City" },
       { name: "street", label: "Street" },
       { name: "houseNumber", label: "House number" },
-      { name: "district", label: "District (optional)" },
-      { name: "postalCode", label: "Postal code (optional)" },
+      { name: "zip", label: "Zip Code (optional)" },
     ],
   },
 ];
 
 export function mapUserToProfileValues(payload = {}) {
-  const user = payload?.user || payload?.data?.user || payload;
+  const user = payload;
 
   return {
-    firstName: user?.name?.first || user?.firstName || user?.first_name || "",
-    middleName:
-      user?.name?.middle || user?.middleName || user?.middle_name || "",
-    lastName: user?.name?.last || user?.lastName || user?.last_name || "",
+    firstName: user?.name?.first || "",
+    middleName: user?.name?.middle || "",
+    lastName: user?.name?.last || "",
     phone: user?.phone || "",
     email: user?.email || "",
-    imageUrl: user?.image?.url || user?.imageUrl || user?.image_url || "",
-    imageAlt: user?.image?.alt || user?.imageAlt || user?.image_alt || "",
+    imageUrl: user?.image?.url || "",
+    imageAlt: user?.image?.alt || "",
+    state: user?.address?.state || "",
     country: user?.address?.country || "",
     city: user?.address?.city || "",
     street: user?.address?.street || "",
@@ -66,12 +66,10 @@ export function mapUserToProfileValues(payload = {}) {
       user?.address?.houseNumber === undefined
         ? ""
         : String(user.address.houseNumber),
-    district: user?.address?.district || "",
-    postalCode:
-      user?.address?.postalCode === null ||
-      user?.address?.postalCode === undefined
+    zip:
+      user?.address?.zip === null || user?.address?.zip === undefined
         ? ""
-        : String(user.address.postalCode),
+        : String(user.address.zip),
     isAdmin: Boolean(user?.isAdmin),
     isRecruiter: Boolean(user?.isRecruiter),
   };

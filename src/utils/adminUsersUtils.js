@@ -30,16 +30,14 @@ export function normalizeUserRow(user = {}) {
     .join(" ")
     .trim();
 
-  const role = String(user?.role || "").toLowerCase();
-
   return {
     id: user?.id || user?._id || "",
     fullName: fullName || "Unknown user",
     email: user?.email || "",
     phone: user?.phone || "",
     createdAt: user?.createdAt || user?.created_at || null,
-    isRecruiter: Boolean(user?.isRecruiter) || role === "recruiter",
-    isAdmin: Boolean(user?.isAdmin) || role === "admin",
+    isRecruiter: Boolean(user?.isRecruiter),
+    isAdmin: Boolean(user?.isAdmin),
   };
 }
 

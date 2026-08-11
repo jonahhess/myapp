@@ -18,13 +18,11 @@ function mapJwtToAuthUser(payload) {
 
   const isAdmin = Boolean(payload.isAdmin);
   const isRecruiter = Boolean(payload.isRecruiter);
-  const role = isAdmin ? "admin" : isRecruiter ? "recruiter" : "registered";
 
   return {
     id: payload.id || payload._id || payload.sub || payload.userId || "",
     isAdmin,
     isRecruiter,
-    role,
   };
 }
 

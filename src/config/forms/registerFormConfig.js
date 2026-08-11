@@ -7,12 +7,12 @@ export const REGISTER_INITIAL_VALUES = {
   password: "",
   imageUrl: "",
   imageAlt: "",
+  state: "",
   country: "",
   city: "",
   street: "",
   houseNumber: "",
-  district: "",
-  postalCode: "",
+  zip: "",
   isRecruiter: false,
 };
 
@@ -44,6 +44,7 @@ export const REGISTER_FIELD_GROUPS = [
   {
     legend: "Address",
     fields: [
+      { name: "state", label: "State" },
       { name: "country", label: "Country" },
       { name: "city", label: "City" },
       { name: "street", label: "Street" },
@@ -54,10 +55,9 @@ export const REGISTER_FIELD_GROUPS = [
           inputMode: "numeric",
         },
       },
-      { name: "district", label: "District (optional)" },
       {
-        name: "postalCode",
-        label: "Postal code (optional)",
+        name: "zip",
+        label: "Zip code (optional)",
         inputProps: {
           inputMode: "numeric",
         },
