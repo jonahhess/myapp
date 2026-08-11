@@ -14,15 +14,3 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-## Testing
-
-- `npm run test:unit` for fast unit checks (no network).
-- `npm run test:integration` for mocked UI integration checks.
-- `npm run test:integration:admin` for focused admin dashboard behavior.
-- `npm run test:integration:recruiter` for focused recruiter dashboard behavior.
-- `npm run test:smoke:prod` for rate-limited production-like smoke checks.
-- `npm run test:smoke:prod:admin` for rate-limited admin endpoint smoke checks.
-- `npm run test:smoke:prod:recruiter` for rate-limited recruiter endpoint smoke checks.
-
-See `TESTING_STRATEGY.md` for full guidance and request-throttling rules.
