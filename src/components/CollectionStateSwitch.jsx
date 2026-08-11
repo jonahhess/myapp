@@ -20,7 +20,7 @@ function CollectionStateSwitch({
     );
   }
 
-  if (!!errorMessage) {
+  if (errorMessage) {
     return (
       errorFallback || (
         <section role="alert" aria-live="polite">
