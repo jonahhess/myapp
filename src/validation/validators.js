@@ -111,7 +111,7 @@ export function createHouseNumberSchema() {
     .matches(/^\d+$/, "House number must contain numbers only");
 }
 
-export function createPostalCodeSchema() {
+export function createZipSchema() {
   return yup
     .string()
     .trim()

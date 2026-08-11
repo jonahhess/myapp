@@ -7,7 +7,7 @@ import {
   createOptionalTrimmedTextSchema,
   createOptionalUrlSchema,
   createPasswordSchema,
-  createPostalCodeSchema,
+  createZipSchema,
   createRequiredTrimmedTextSchema,
 } from "./validators";
 
@@ -28,12 +28,12 @@ function createCommonUserDetailsValidationShape() {
     imageAlt: createImageAltSchema(
       "Image alt text is required when URL is provided",
     ),
+    state: createRequiredTrimmedTextSchema({ label: "State" }),
     country: createRequiredTrimmedTextSchema({ label: "Country" }),
     city: createRequiredTrimmedTextSchema({ label: "City" }),
     street: createRequiredTrimmedTextSchema({ label: "Street" }),
     houseNumber: createHouseNumberSchema(),
-    district: createOptionalTrimmedTextSchema({}),
-    postalCode: createPostalCodeSchema(),
+    zip: createZipSchema(),
   };
 }
 
