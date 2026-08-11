@@ -21,7 +21,6 @@ The app uses React Router for routing, Formik + Yup for forms and validation, an
 - Formik
 - Yup
 - ESLint (flat config)
-- Vitest + Testing Library
 
 ## Project Structure
 
@@ -112,21 +111,6 @@ Run lint:
 npm run lint
 
 ESLint config is in eslint.config.js.
-
-## Testing
-
-Run all tests:
-
-npm run test
-
-Watch mode:
-
-npm run test:watch
-
-Vitest is configured in vite.config.js with setup file:
-- src/test/setup.js
-
-Note: package scripts include additional targeted and smoke test commands. Keep script paths in package.json aligned with your actual test directory structure when adding or moving tests.
 
 ## Backend Contract
 
