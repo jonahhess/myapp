@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import JobForm from "../components/JobForm.jsx";
-import { useJobs } from "../contexts/JobsContext.jsx";
+import useJobs from "../hooks/useJobs.js";
 import jobsService from "../services/jobsService";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 

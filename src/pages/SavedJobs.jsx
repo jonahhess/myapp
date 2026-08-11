@@ -4,8 +4,8 @@ import CollectionPagination from "../components/CollectionPagination.jsx";
 import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
-import { useAuth } from "../contexts/AuthContext.jsx";
-import { useJobs } from "../contexts/JobsContext.jsx";
+import useAuth from "../hooks/useAuth.js";
+import useJobs from "../hooks/useJobs.js";
 import useListResourceController from "../hooks/useListResourceController";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 

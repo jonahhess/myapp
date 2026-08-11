@@ -1,7 +1,7 @@
 import LoginForm from "../components/Form.jsx";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext.jsx";
+import useAuth from "../hooks/useAuth.js";
 import { getUserFriendlyErrorMessage } from "../utils/errors";
 import { normalizeLoginPayload } from "../utils/requestNormalization";
 

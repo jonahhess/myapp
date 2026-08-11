@@ -1,15 +1,12 @@
 import {
-  createContext,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  use,
 } from "react";
+import AuthContext from "./authContext.js";
 import usersService from "../services/usersService";
 import { decodeJwt, isJwtExpired } from "../utils/jwt";
-
-const AuthContext = createContext(null);
 
 function mapJwtToAuthUser(payload) {
   if (!payload || typeof payload !== "object") {
@@ -97,14 +94,4 @@ export function AuthProvider({ children }) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  const context = use(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-
-  return context;
 }

@@ -1,13 +1,10 @@
 import {
-  createContext,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  use,
 } from "react";
-
-const ThemeContext = createContext(null);
+import ThemeContext from "./themeContext.js";
 const STORAGE_KEY = "appTheme";
 
 function getInitialTheme() {
@@ -47,14 +44,4 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
-}
-
-export function useTheme() {
-  const context = use(ThemeContext);
-
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-
-  return context;
 }

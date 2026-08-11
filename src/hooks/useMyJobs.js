@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useJobs } from "../contexts/JobsContext.jsx";
+import useJobs from "./useJobs.js";
 import useListResourceController from "./useListResourceController.js";
 import useAsyncMutation from "./useAsyncMutation.js";
 import jobsService from "../services/jobsService.js";

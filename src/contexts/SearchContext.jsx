@@ -1,6 +1,5 @@
-import { createContext, useCallback, useMemo, useState, use } from "react";
-
-const SearchContext = createContext(null);
+import { useCallback, useMemo, useState } from "react";
+import SearchContext from "./searchContext.js";
 
 const DEFAULT_FILTERS = {
   title: "",
@@ -64,14 +63,4 @@ export function SearchProvider({ children }) {
   return (
     <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
   );
-}
-
-export function useSearchUi() {
-  const context = use(SearchContext);
-
-  if (!context) {
-    throw new Error("useSearchUi must be used within SearchProvider");
-  }
-
-  return context;
 }

@@ -1,16 +1,13 @@
 import {
-  createContext,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  use,
 } from "react";
+import JobsContext from "./jobsContext.js";
 import jobsService from "../services/jobsService";
 import { normalizeJob } from "../utils/normalizers";
-
-const JobsContext = createContext(null);
 const JOBS_CACHE_TTL_MS = 3 * 60 * 1000;
 const REVALIDATE_MIN_INTERVAL_MS = 60 * 1000;
 
@@ -117,7 +114,13 @@ export function JobsProvider({ children }) {
   );
 
   useEffect(() => {
-    loadJobs();
+    const timeoutId = window.setTimeout(() => {
+      loadJobs().catch(() => {});
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, [loadJobs]);
 
   useEffect(() => {
@@ -171,19 +174,4 @@ export function JobsProvider({ children }) {
   );
 
   return <JobsContext.Provider value={value}>{children}</JobsContext.Provider>;
-}
-
-export function useJobs(options = {}) {
-  const { optional = false } = options;
-  const context = use(JobsContext);
-
-  if (!context) {
-    if (optional) {
-      return null;
-    }
-
-    throw new Error("useJobs must be used within JobsProvider");
-  }
-
-  return context;
 }

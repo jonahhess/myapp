@@ -4,9 +4,9 @@ import CollectionPagination from "../components/CollectionPagination.jsx";
 import CollectionStateSwitch from "../components/CollectionStateSwitch.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import JobCardSkeletonStack from "../components/JobCardSkeletonStack.jsx";
-import { useAuth } from "../contexts/AuthContext.jsx";
+import useAuth from "../hooks/useAuth.js";
 import usePagedCollection from "../hooks/usePagedCollection";
-import { useJobs } from "../contexts/JobsContext.jsx";
+import useJobs from "../hooks/useJobs.js";
 import useSavedJobsActions from "../hooks/useSavedJobsActions";
 
 const LazyJobCard = lazy(() => import("../components/JobCard.jsx"));

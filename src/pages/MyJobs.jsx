@@ -63,7 +63,7 @@ function MyJobs() {
       <ConfirmationModal
         isOpen={Boolean(jobPendingDelete)}
         title="Delete this job?"
-        message={`This will permanently delete \"${jobPendingDelete?.title || "this job"}\". This action cannot be undone.`}
+        message={`This will permanently delete "${jobPendingDelete?.title || "this job"}". This action cannot be undone.`}
         onCancel={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
         cancelLabel="Cancel"

@@ -9,7 +9,7 @@ import {
   PROFILE_EDITABLE_GROUPS,
   PROFILE_INITIAL_VALUES,
 } from "../config/forms/profileFormConfig";
-import { useAuth } from "../contexts/AuthContext.jsx";
+import useAuth from "../hooks/useAuth.js";
 import usersService from "../services/usersService";
 import { createProfileValidationSchema } from "../validation/schemas";
 import { getUserFriendlyErrorMessage } from "../utils/errors";

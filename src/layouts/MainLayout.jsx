@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 import Navbar from "../components/Navbar.jsx";
-import { useAuth } from "../contexts/AuthContext.jsx";
-import { useTheme } from "../contexts/ThemeContext.jsx";
+import useAuth from "../hooks/useAuth.js";
+import useTheme from "../hooks/useTheme.js";
 import {
   isAdmin as hasAdminRole,
   isRecruiter as hasRecruiterRole,

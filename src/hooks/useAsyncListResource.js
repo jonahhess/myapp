@@ -61,7 +61,6 @@ export default function useAsyncListResource({
     isMountedRef.current = true;
 
     if (!enabled) {
-      setIsLoading(false);
       return () => {
         isMountedRef.current = false;
       };
@@ -85,7 +84,7 @@ export default function useAsyncListResource({
   return {
     items,
     setItems,
-    isLoading,
+    isLoading: enabled ? isLoading : false,
     errorMessage: loadError,
     setErrorMessage: setLoadError,
     reload,

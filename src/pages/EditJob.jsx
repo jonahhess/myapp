@@ -2,8 +2,8 @@ import { Suspense, use, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import JobForm from "../components/JobForm.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
-import { useAuth } from "../contexts/AuthContext.jsx";
-import { useJobs } from "../contexts/JobsContext.jsx";
+import useAuth from "../hooks/useAuth.js";
+import useJobs from "../hooks/useJobs.js";
 import {
   editJobResourceCache,
   resetJobResourceCache,
