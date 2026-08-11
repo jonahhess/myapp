@@ -13,26 +13,19 @@ export function createJobValidationSchema() {
   return yup.object({
     title: createRequiredTrimmedTextSchema({
       label: "Job title",
-      min: 2,
-      max: 256,
     }),
     company: createRequiredTrimmedTextSchema({
       label: "Company name",
-      min: 2,
-      max: 256,
     }),
     description: createRequiredTrimmedTextSchema({
       label: "Description",
-      min: 2,
       max: 1024,
     }),
     category: createRequiredTrimmedTextSchema({
       label: "Category",
-      min: 2,
     }),
     location: createRequiredTrimmedTextSchema({
       label: "Location",
-      min: 2,
     }),
     jobType: yup
       .string()

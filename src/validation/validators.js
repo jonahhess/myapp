@@ -23,8 +23,8 @@ export function extractDigits(value = "") {
 
 export function createRequiredTrimmedTextSchema({
   label,
-  min,
-  max,
+  min = 2,
+  max = 256,
   requiredMessage,
   minMessage,
   maxMessage,

@@ -15,8 +15,6 @@ function createCommonUserDetailsValidationShape() {
   return {
     firstName: createRequiredTrimmedTextSchema({
       label: "First name",
-      min: 2,
-      max: 256,
     }),
     middleName: createOptionalTrimmedTextSchema({
       max: 256,
@@ -24,8 +22,6 @@ function createCommonUserDetailsValidationShape() {
     }),
     lastName: createRequiredTrimmedTextSchema({
       label: "Last name",
-      min: 2,
-      max: 256,
     }),
     phone: createIsraeliPhoneSchema(),
     imageUrl: createOptionalUrlSchema("Image URL must be valid").nullable(),
